@@ -1,4 +1,4 @@
-import DepthIncreaseCounter.countIncrements
+import DepthIncreaseCounter._
 import org.scalatest.freespec.AnyFreeSpec
 
 class DepthIncreaseCounterSpec extends AnyFreeSpec {

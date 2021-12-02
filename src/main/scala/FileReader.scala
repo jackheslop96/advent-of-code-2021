@@ -2,9 +2,13 @@ import scala.io.Source
 
 object FileReader {
 
-  def fileReader(file: String): Seq[Int] = {
+  def intFileReader(file: String): Seq[Int] = {
+    stringFileReader(file).map(_.toInt)
+  }
+
+  def stringFileReader(file: String): Seq[String] = {
     val inputStream = getClass.getResourceAsStream(file)
-    Source.fromInputStream(inputStream).getLines().map(_.toInt).toSeq
+    Source.fromInputStream(inputStream).getLines().toSeq
   }
 
 }
