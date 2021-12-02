@@ -1,4 +1,4 @@
-import DepthIncreaseCounter.countIncrements
+import DepthIncreaseCounter.{countIncrements, countSlidingWindowIncrements}
 import org.scalatest.freespec.AnyFreeSpec
 
 class DepthIncreaseCounterSpec extends AnyFreeSpec {
@@ -39,6 +39,14 @@ class DepthIncreaseCounterSpec extends AnyFreeSpec {
       val depths = Seq(199, 200, 208, 210, 200, 207, 240, 269, 260, 263)
       val result = countIncrements(depths)
       assert(result == 7)
+    }
+  }
+
+  "countSlidingWindowIncrements" - {
+    "must return 5 for Seq(199, 200, 208, 210, 200, 207, 240, 269, 260, 263)" in {
+      val depths = Seq(199, 200, 208, 210, 200, 207, 240, 269, 260, 263)
+      val result = countSlidingWindowIncrements(depths)
+      assert(result == 5)
     }
   }
 }
