@@ -1,4 +1,0 @@
-[0m[[0m[33mwarn[0m] [0m[0m/Users/jackheslop/Documents/Projects/advent-of-code/advent-of-code-2021/src/main/scala/FileReader.scala:10:12: This catches all Throwables. If this is really intended, use `case _ : Throwable` to clear this warning.[0m
-[0m[[0m[33mwarn[0m] [0m[0m      case _ => throw new IllegalArgumentException[0m
-[0m[[0m[33mwarn[0m] [0m[0m           ^[0m
-[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m
