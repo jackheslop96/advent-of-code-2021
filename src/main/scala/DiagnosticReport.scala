@@ -4,36 +4,29 @@ import scala.math.pow
 object DiagnosticReport {
 
   def gammaRate(lines: Seq[String]): String =
-    aggregateLines(lines)(mostCommon)
+    buildBitString(lines)(mostCommon)
 
   def epsilonRate(lines: Seq[String]): String =
-    aggregateLines(lines)(leastCommon)
+    buildBitString(lines)(leastCommon)
 
   def powerConsumption(lines: Seq[String]): Double =
     binaryToDecimal(gammaRate(lines)) * binaryToDecimal(epsilonRate(lines))
 
-  private def aggregateLines(lines: Seq[String])(f: Seq[Char] => Char): String =
+  def oxygenGeneratorRating(lines: Seq[String]): String =
+    chooseBitString(lines)(mostCommon)
+
+  def co2ScrubberRating(lines: Seq[String]): String =
+    chooseBitString(lines)(leastCommon)
+
+  def lifeSupportRating(lines: Seq[String]): Double =
+    binaryToDecimal(oxygenGeneratorRating(lines)) * binaryToDecimal(co2ScrubberRating(lines))
+
+  // builds a string of bits of the most or least common bit in each column of bits
+  private def buildBitString(lines: Seq[String])(f: Seq[Char] => Char): String =
     lines.transpose.map(f).mkString
 
-  def binaryToDecimal(binary: String): Double = binary.reverse.zipWithIndex.foldLeft[Double](0)((a, b) => {
-    (a, b) match {
-      case (acc, (char, index)) =>
-        char match {
-          case '1' => acc + pow(2, index.toDouble)
-          case _ => acc
-        }
-    }
-  })
-
-  def oxygenGeneratorRating(lines: Seq[String]): String = {
-    gasRating(lines)(mostCommon)
-  }
-
-  def co2ScrubberRating(lines: Seq[String]): String = {
-    gasRating(lines)(leastCommon)
-  }
-
-  private def gasRating(lines: Seq[String])(f: Seq[Char] => Char): String = {
+  // chooses the row of bits that is closest to being made up of the most or least common bit in each column of bits
+  private def chooseBitString(lines: Seq[String])(f: Seq[Char] => Char): String = {
     @tailrec
     def rec(xs: Seq[String], index: Int = 0): String = {
       val transposedLines = xs.transpose
@@ -47,6 +40,17 @@ object DiagnosticReport {
     }
     rec(lines)
   }
+
+  def binaryToDecimal(binary: String): Double = binary
+    .reverse
+    .zipWithIndex
+    .foldLeft[Double](0)((a, b) => (a, b) match {
+      case (acc, (char, index)) =>
+        char match {
+          case '1' => acc + pow(2, index.toDouble)
+          case _ => acc
+        }
+    })
 
   sealed trait Commonality
   case object MostCommon extends Commonality
@@ -64,8 +68,5 @@ object DiagnosticReport {
       case (_, _, MostCommon) => '0'
     }
   }
-
-  def lifeSupportRating(lines: Seq[String]): Double =
-    binaryToDecimal(oxygenGeneratorRating(lines)) * binaryToDecimal(co2ScrubberRating(lines))
 
 }
