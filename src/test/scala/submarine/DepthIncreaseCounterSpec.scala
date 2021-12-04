@@ -1,5 +1,7 @@
-import DepthIncreaseCounter._
+package submarine
+
 import org.scalatest.freespec.AnyFreeSpec
+import submarine.DepthIncreaseCounter._
 
 class DepthIncreaseCounterSpec extends AnyFreeSpec {
 

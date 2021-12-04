@@ -1,5 +1,7 @@
-import Submarine._
+package submarine
+
 import org.scalatest.freespec.AnyFreeSpec
+import submarine.Submarine.applyInstructions
 
 class SubmarineSpec extends AnyFreeSpec {
 

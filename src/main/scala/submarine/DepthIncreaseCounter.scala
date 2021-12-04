@@ -1,3 +1,5 @@
+package submarine
+
 import scala.annotation.tailrec
 
 object DepthIncreaseCounter {

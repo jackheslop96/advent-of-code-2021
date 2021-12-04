@@ -1,5 +1,7 @@
-import DiagnosticReport._
+package submarine
+
 import org.scalatest.freespec.AnyFreeSpec
+import submarine.DiagnosticReport._
 
 class DiagnosticReportSpec extends AnyFreeSpec {
 

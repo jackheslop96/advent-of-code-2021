@@ -1,3 +1,5 @@
+package submarine
+
 case class Submarine(horizontalPosition: Int, depth: Int, aim: Int) {
 
   def applyInstruction(instruction: String): Submarine = {

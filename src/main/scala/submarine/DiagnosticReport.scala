@@ -1,3 +1,5 @@
+package submarine
+
 import scala.annotation.tailrec
 import scala.math.pow
 
@@ -34,10 +36,11 @@ object DiagnosticReport {
         case head :: Nil =>
           head
         case _ =>
-          val filteredLines = xs.filter(_(index) == f(transposedLines(index)))
+          val filteredLines = xs.filter(_ (index) == f(transposedLines(index)))
           rec(filteredLines, index + 1)
       }
     }
+
     rec(lines)
   }
 
@@ -53,7 +56,9 @@ object DiagnosticReport {
     })
 
   sealed trait Commonality
+
   case object MostCommon extends Commonality
+
   case object LeastCommon extends Commonality
 
   def mostCommon(chars: Seq[Char]): Char = commonality(chars, MostCommon)
