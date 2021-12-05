@@ -54,21 +54,14 @@ class BingoSpec extends AnyFreeSpec {
   }
 
   "playGame" - {
-    "must return 4512" - {
-      "when given example input" in {
-        val lines = stringFileReader("/day-4-test-input.txt")
-        val result = playGame(lines)
-        assert(result == 4512)
+    "when given example input" - {
+      val lines = stringFileReader("/day-4-test-input.txt")
+      val result = playGame(lines)
+      "must return score of 4512 for winner" in {
+        assert(result.head._2 == 4512)
       }
-    }
-  }
-
-  "loseOnPurpose" - {
-    "must return 1924" - {
-      "when given example input" in {
-        val lines = stringFileReader("/day-4-test-input.txt")
-        val result = loseOnPurpose(lines)
-        assert(result == 1924)
+      "must return score of 1924 for loser" in {
+        assert(result.last._2 == 1924)
       }
     }
   }

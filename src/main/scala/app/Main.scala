@@ -19,6 +19,6 @@ object Main extends App {
   println(s"Day 3 part 2 result: ${lifeSupportRating(report)}")
 
   val bingoConfig = stringFileReader("/day-4-input.txt")
-  println(s"Day 4 part 1 result: ${playGame(bingoConfig)}")
-  println(s"Day 4 part 2 result: ${loseOnPurpose(bingoConfig)}")
+  println("Day 4 result:")
+  playGame(bingoConfig).foreach(x => println(s"${x._1}: ${x._2}"))
 }

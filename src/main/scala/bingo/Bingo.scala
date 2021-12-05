@@ -24,43 +24,27 @@ object Bingo {
     Bingo(drawnNumbers, rec(lines.tail))
   }
 
-  def playGame(lines: Seq[String]): Int = {
+  def playGame(lines: Seq[String]): Seq[(Int, Int)] = {
     @tailrec
-    def rec(game: Bingo): Int = {
+    def rec(game: Bingo, acc: Seq[(Int, Int)] = Nil): Seq[(Int, Int)] = {
       game.numbersToDraw match {
-        case Nil => 0
+        case Nil =>
+          acc
         case numbers =>
           val number = numbers.head
           val updatedGame = game.copy(
             numbersToDraw = numbers.tail,
             boards = game.boards.map(_.updateBoard(number))
           )
-          updatedGame.boards.find(_.isComplete) match {
-            case Some(board) => number * board.sumOfUnmarkedNumbers
-            case None => rec(updatedGame)
-          }
-      }
-    }
-
-    rec(initialise(lines))
-  }
-
-  def loseOnPurpose(lines: Seq[String]): Int = {
-    @tailrec
-    def rec(game: Bingo, losingBoardIndex: Option[Int] = None): Int = {
-      game.numbersToDraw match {
-        case Nil => 0
-        case numbers =>
-          val number = numbers.head
-          val updatedGame = game.copy(
-            numbersToDraw = numbers.tail,
-            boards = game.boards.map(_.updateBoard(number))
-          )
-
-          (updatedGame.boards.zipWithIndex.filter(!_._1.isComplete), losingBoardIndex) match {
-            case (Nil, Some(index)) => number * updatedGame.boards(index).sumOfUnmarkedNumbers
-            case ((_, index) :: Nil, _) => rec(updatedGame, Some(index))
-            case _ => rec(updatedGame)
+          val updatedBoards = updatedGame.boards
+          updatedBoards.filter(_.isComplete) match {
+            case Nil =>
+              rec(updatedGame, acc)
+            case boards =>
+              rec(
+                game = updatedGame.copy(boards = updatedBoards.filterNot(_.isComplete)),
+                acc = acc ++ boards.map(x => (acc.size + 1, x.sumOfUnmarkedNumbers * number))
+              )
           }
       }
     }
