@@ -55,6 +55,40 @@ class HydrothermalVentSpec extends AnyFreeSpec {
         )
         assertResult(expectedResult)(result)
       }
+
+      "when given a coordinate pair with increasing x and y" in {
+        val input = "0,0 -> 8,8"
+        val result = generateListOfCoordinates(input)
+        val expectedResult = Seq(
+          Coordinate(0, 0),
+          Coordinate(1, 1),
+          Coordinate(2, 2),
+          Coordinate(3, 3),
+          Coordinate(4, 4),
+          Coordinate(5, 5),
+          Coordinate(6, 6),
+          Coordinate(7, 7),
+          Coordinate(8, 8)
+        )
+        assertResult(expectedResult)(result)
+      }
+
+      "when given a coordinate pair with decreasing x and y" in {
+        val input = "8,0 -> 0,8"
+        val result = generateListOfCoordinates(input)
+        val expectedResult = Seq(
+          Coordinate(8, 0),
+          Coordinate(7, 1),
+          Coordinate(6, 2),
+          Coordinate(5, 3),
+          Coordinate(4, 4),
+          Coordinate(3, 5),
+          Coordinate(2, 6),
+          Coordinate(1, 7),
+          Coordinate(0, 8)
+        )
+        assertResult(expectedResult)(result)
+      }
     }
   }
 
@@ -92,6 +126,16 @@ class HydrothermalVentSpec extends AnyFreeSpec {
           Coordinate(4, 9),
           Coordinate(5, 9),
 
+          Coordinate(8, 0),
+          Coordinate(7, 1),
+          Coordinate(6, 2),
+          Coordinate(5, 3),
+          Coordinate(4, 4),
+          Coordinate(3, 5),
+          Coordinate(2, 6),
+          Coordinate(1, 7),
+          Coordinate(0, 8),
+
           Coordinate(9, 4),
           Coordinate(8, 4),
           Coordinate(7, 4),
@@ -109,13 +153,34 @@ class HydrothermalVentSpec extends AnyFreeSpec {
           Coordinate(7, 3),
           Coordinate(7, 4),
 
+          Coordinate(6, 4),
+          Coordinate(5, 3),
+          Coordinate(4, 2),
+          Coordinate(3, 1),
+          Coordinate(2, 0),
+
           Coordinate(0, 9),
           Coordinate(1, 9),
           Coordinate(2, 9),
 
           Coordinate(3, 4),
           Coordinate(2, 4),
-          Coordinate(1, 4)
+          Coordinate(1, 4),
+
+          Coordinate(0, 0),
+          Coordinate(1, 1),
+          Coordinate(2, 2),
+          Coordinate(3, 3),
+          Coordinate(4, 4),
+          Coordinate(5, 5),
+          Coordinate(6, 6),
+          Coordinate(7, 7),
+          Coordinate(8, 8),
+
+          Coordinate(5, 5),
+          Coordinate(6, 4),
+          Coordinate(7, 3),
+          Coordinate(8, 2)
         )
         assertResult(expectedResult)(result)
       }

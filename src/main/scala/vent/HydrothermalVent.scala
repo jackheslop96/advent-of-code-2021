@@ -9,7 +9,7 @@ object HydrothermalVent {
 
   def generateAllCoordinates(lines: Seq[String]): Seq[Coordinate] =
     lines
-      .filter(isLineHorizontalOrVertical)
+      //.filter(isLineHorizontalOrVertical) // Only needed for part 1
       .flatMap(generateListOfCoordinates)
 
   def isLineHorizontalOrVertical(coordinatePair: String): Boolean = {
@@ -17,32 +17,27 @@ object HydrothermalVent {
     coordinates._1.x == coordinates._2.x || coordinates._1.y == coordinates._2.y
   }
 
-  sealed trait CoordinateVariation
-  case object ChangingInX extends CoordinateVariation
-  case object ChangingInY extends CoordinateVariation
-
   def generateListOfCoordinates(coordinatePair: String): Seq[Coordinate] = {
-    def generate(constantCoordinate: Int, coordinateRange: Range, variation: CoordinateVariation): Seq[Coordinate] = {
-      coordinateRange.foldLeft[Seq[Coordinate]](Nil)((acc, coordinate) => {
-        acc :+ (variation match {
-          case ChangingInX => Coordinate(coordinate, constantCoordinate)
-          case ChangingInY => Coordinate(constantCoordinate, coordinate)
-        })
-      })
+    def generate(xCoordinateRange: Range, yCoordinateRange: Range): Seq[Coordinate] = {
+      val (xList, yList) = (xCoordinateRange.toList, yCoordinateRange.toList) match {
+        case (xs, ys) if xs.size == 1 => (List.fill(ys.size)(xs.head), ys)
+        case (xs, ys) if ys.size == 1 => (xs, List.fill(xs.size)(ys.head))
+        case (xs, ys) => (xs, ys)
+      }
+      xList
+        .zip(yList)
+        .map(c => Coordinate(c._1, c._2))
     }
-
-    Range(5, 0).foreach(println)
 
     parseCoordinatePair(coordinatePair) match {
-      case (f, t) if f.x == t.x =>
-        val step = if (f.y < t.y) 1 else -1
-        generate(f.x, Range.inclusive(f.y, t.y, step), ChangingInY)
-      case (f, t) if f.y == t.y =>
-        val step = if (f.x < t.x) 1 else -1
-        generate(f.y, Range.inclusive(f.x, t.x, step), ChangingInX)
-      case _ => ???
+      case (f, t) => generate(
+        xCoordinateRange = Range.inclusive(f.x, t.x, step(f.x, t.x)),
+        yCoordinateRange = Range.inclusive(f.y, t.y, step(f.y, t.y))
+      )
     }
   }
+
+  private def step(c1: Int, c2: Int): Int = if (c1 < c2) 1 else -1
 
   private def parseCoordinatePair(coordinatePair: String): (Coordinate, Coordinate) = {
     val pattern = "([0-9]+),([0-9]+) -> ([0-9]+),([0-9]+)".r

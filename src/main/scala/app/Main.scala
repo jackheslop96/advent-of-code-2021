@@ -28,5 +28,5 @@ object Main extends App {
   println()
 
   val coordinates = stringFileReader("/day-5-input.txt")
-  println(s"Day 5 part 1 result: ${countDangerousAreas(generateAllCoordinates(coordinates))}")
+  println(s"Day 5 part 2 result: ${countDangerousAreas(generateAllCoordinates(coordinates))}")
 }
