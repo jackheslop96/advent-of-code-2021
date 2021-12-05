@@ -5,6 +5,7 @@ import submarine.DepthIncreaseCounter._
 import submarine.DiagnosticReport._
 import submarine.Submarine._
 import utils.FileReader._
+import vent.HydrothermalVent._
 
 object Main extends App {
   val depths = intFileReader("/day-1-input.txt")
@@ -25,4 +26,7 @@ object Main extends App {
   println("Day 4 result:")
   playGame(bingoConfig).foreach(x => println(s"${x._1}: ${x._2}"))
   println()
+
+  val coordinates = stringFileReader("/day-5-input.txt")
+  println(s"Day 5 part 1 result: ${countDangerousAreas(generateAllCoordinates(coordinates))}")
 }
