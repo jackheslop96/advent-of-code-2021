@@ -10,15 +10,19 @@ object Main extends App {
   val depths = intFileReader("/day-1-input.txt")
   println(s"Day 1 part 1 result: ${countIncrements(depths)}")
   println(s"Day 1 part 2 result: ${countIncrements(depths, 3)}")
+  println()
 
   val instructions = stringFileReader("/day-2-input.txt")
   println(s"Day 2 part 2 result: ${applyInstructions(instructions).multiplyPositions}")
+  println()
 
   val report = stringFileReader("/day-3-input.txt")
   println(s"Day 3 part 1 result: ${powerConsumption(report)}")
   println(s"Day 3 part 2 result: ${lifeSupportRating(report)}")
+  println()
 
   val bingoConfig = stringFileReader("/day-4-input.txt")
   println("Day 4 result:")
   playGame(bingoConfig).foreach(x => println(s"${x._1}: ${x._2}"))
+  println()
 }
