@@ -115,9 +115,49 @@ class HydrothermalVentSpec extends AnyFreeSpec {
 
   "generateAllCoordinates" - {
     "must generate all coordinates" - {
-      "when given a list of coordinate pair" in {
-        val input = stringFileReader("/day-5-test-input.txt")
-        val result = generateAllCoordinates(input)
+
+      val input = stringFileReader("/day-5-test-input.txt")
+
+      "when given a list of coordinate pairs and not including diagonals" in {
+        val result = generateAllCoordinates(input, includeDiagonals = false)
+        val expectedResult = Seq(
+          Coordinate(0, 9),
+          Coordinate(1, 9),
+          Coordinate(2, 9),
+          Coordinate(3, 9),
+          Coordinate(4, 9),
+          Coordinate(5, 9),
+
+          Coordinate(9, 4),
+          Coordinate(8, 4),
+          Coordinate(7, 4),
+          Coordinate(6, 4),
+          Coordinate(5, 4),
+          Coordinate(4, 4),
+          Coordinate(3, 4),
+
+          Coordinate(2, 2),
+          Coordinate(2, 1),
+
+          Coordinate(7, 0),
+          Coordinate(7, 1),
+          Coordinate(7, 2),
+          Coordinate(7, 3),
+          Coordinate(7, 4),
+
+          Coordinate(0, 9),
+          Coordinate(1, 9),
+          Coordinate(2, 9),
+
+          Coordinate(3, 4),
+          Coordinate(2, 4),
+          Coordinate(1, 4)
+        )
+        assertResult(expectedResult)(result)
+      }
+
+      "when given a list of coordinate pairs and including diagonals" in {
+        val result = generateAllCoordinates(input, includeDiagonals = true)
         val expectedResult = Seq(
           Coordinate(0, 9),
           Coordinate(1, 9),

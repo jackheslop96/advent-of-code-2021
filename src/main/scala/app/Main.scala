@@ -5,6 +5,7 @@ import submarine.DepthIncreaseCounter._
 import submarine.DiagnosticReport._
 import submarine.Submarine._
 import utils.FileReader._
+import vent.HydrothermalVent
 import vent.HydrothermalVent._
 
 object Main extends App {
@@ -28,5 +29,6 @@ object Main extends App {
   println()
 
   val coordinates = stringFileReader("/day-5-input.txt")
-  println(s"Day 5 part 2 result: ${countDangerousAreas(generateAllCoordinates(coordinates))}")
+  println(s"Day 5 part 1 result: ${HydrothermalVent(coordinates, includeDiagonals = false)}")
+  println(s"Day 5 part 2 result: ${HydrothermalVent(coordinates, includeDiagonals = true)}")
 }

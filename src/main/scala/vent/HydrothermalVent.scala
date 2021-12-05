@@ -2,14 +2,17 @@ package vent
 
 object HydrothermalVent {
 
+  def apply(lines: Seq[String], includeDiagonals: Boolean): Int =
+    countDangerousAreas(generateAllCoordinates(lines, includeDiagonals))
+
   def countDangerousAreas(coordinates: Seq[Coordinate]): Int =
     coordinates
       .groupBy(identity)
       .count(_._2.size > 1)
 
-  def generateAllCoordinates(lines: Seq[String]): Seq[Coordinate] =
+  def generateAllCoordinates(lines: Seq[String], includeDiagonals: Boolean): Seq[Coordinate] =
     lines
-      //.filter(isLineHorizontalOrVertical) // Only needed for part 1
+      .filter(x => includeDiagonals || isLineHorizontalOrVertical(x))
       .flatMap(generateListOfCoordinates)
 
   def isLineHorizontalOrVertical(coordinatePair: String): Boolean = {
@@ -24,6 +27,7 @@ object HydrothermalVent {
         case (xs, ys) if ys.size == 1 => (xs, List.fill(xs.size)(ys.head))
         case (xs, ys) => (xs, ys)
       }
+      
       xList
         .zip(yList)
         .map(c => Coordinate(c._1, c._2))
