@@ -45,7 +45,7 @@ object DiagnosticReport {
         case head :: Nil =>
           head
         case _ =>
-          val filteredLines = xs.filter(_ (index) == f(transposedLines(index)))
+          val filteredLines = xs.filter(_(index) == f(transposedLines(index)))
           rec(filteredLines, index + 1)
       }
     }

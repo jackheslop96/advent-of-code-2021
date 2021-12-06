@@ -57,9 +57,7 @@ object HydrothermalVent {
   private def parseCoordinatePair(coordinatePair: String): (Coordinate, Coordinate) = {
     val pattern = "([0-9]+),([0-9]+) -> ([0-9]+),([0-9]+)".r
     val pattern(x1, y1, x2, y2) = coordinatePair
-    val fromCoordinate = Coordinate(x1, y1)
-    val toCoordinate = Coordinate(x2, y2)
-    (fromCoordinate, toCoordinate)
+    (Coordinate(x1, y1), Coordinate(x2, y2))
   }
 
 }
