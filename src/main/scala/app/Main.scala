@@ -1,12 +1,12 @@
 package app
 
 import bingo.Bingo._
+import fish.LanternFish._
 import submarine.DepthIncreaseCounter._
 import submarine.DiagnosticReport._
 import submarine.Submarine._
 import utils.FileReader._
 import vent.HydrothermalVent
-import vent.HydrothermalVent._
 
 object Main extends App {
   val depths = intFileReader("/day-1-input.txt")
@@ -31,4 +31,7 @@ object Main extends App {
   val coordinates = stringFileReader("/day-5-input.txt")
   println(s"Day 5 part 1 result: ${HydrothermalVent(coordinates, includeDiagonals = false)}")
   println(s"Day 5 part 2 result: ${HydrothermalVent(coordinates, includeDiagonals = true)}")
+
+  val fish = stringFileReader("/day-6-input.txt")
+  println(s"Day 6 part 1 result: ${modelPopulationGrowth(fish, 80)}")
 }
