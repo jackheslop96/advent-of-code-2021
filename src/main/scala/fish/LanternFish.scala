@@ -1,46 +1,54 @@
 package fish
 
+import utils.FileReader.stringFileReader
+
 import scala.annotation.tailrec
-
-case class LanternFish(daysUntilNewFish: Int, newFishNeedsCreating: Boolean = false) {
-
-  def simulateDay: LanternFish = daysUntilNewFish match {
-    case 0 => this.copy(daysUntilNewFish = 6, newFishNeedsCreating = true)
-    case x => this.copy(daysUntilNewFish = x - 1)
-  }
-
-  def resetFlag: LanternFish = this.copy(newFishNeedsCreating = false)
-}
 
 object LanternFish {
 
-  def modelPopulationGrowth(input: Seq[String], days: Int): Int = {
-    val fish = getListOfFish(input.head)
-    simulateNDays(fish, days).size
+  def run(file: String, numberOfDays: Int): Long = {
+    val input = parseInput(stringFileReader(file))
+    val map = simulateDays(getMap(input), numberOfDays)
+    map.values.sum
   }
 
-  def apply(daysUntilNewFish: Int) = new LanternFish(daysUntilNewFish)
+  def parseInput(input: Seq[String]): Seq[Int] = {
+    input
+      .head
+      .split(",")
+      .map(_.toInt)
+  }
 
-  def getListOfFish(input: String): Seq[LanternFish] = input
-    .split(",")
-    .map(_.toInt)
-    .map(LanternFish(_))
-    .toSeq
+  def getMap(input: Seq[Int]): Map[Int, Long] = {
+    input
+      .groupBy(identity)
+      .map(f => (f._1, f._2.length))
+  }
 
-  def simulateNDays(lanternFish: Seq[LanternFish], n: Int): Seq[LanternFish] = {
+  def simulateDays(map: Map[Int, Long], numberOfDays: Int): Map[Int, Long] = {
     @tailrec
-    def rec(lanternFish: Seq[LanternFish], n: Int): Seq[LanternFish] = n match {
-      case 0 => lanternFish
-      case _ => rec(simulateDay(lanternFish), n - 1)
+    def rec(acc: Map[Int, Long], daysRemaining: Int): Map[Int, Long] = {
+      daysRemaining match {
+        case 0 => acc
+        case _ => rec(simulateDay(acc), daysRemaining - 1)
+      }
     }
-    rec(lanternFish, n)
+    rec(map, numberOfDays)
   }
 
-  def simulateDay(lanternFish: Seq[LanternFish]): Seq[LanternFish] =
-    appendFish(lanternFish.map(_.simulateDay))
+  def simulateDay(map: Map[Int, Long]): Map[Int, Long] = {
+    def combineMaps(a: Map[Int, Long], b: Map[Int, Long]): Map[Int, Long] = {
+      a ++ b.map {
+        case (k, v) => k -> (v + a.getOrElse(k, 0L))
+      }
+    }
 
-  private def appendFish(lanternFish: Seq[LanternFish]): Seq[LanternFish] = {
-    val numberOfNewFish = lanternFish.count(_.newFishNeedsCreating)
-    lanternFish.map(_.resetFlag) ++ Seq.fill(numberOfNewFish)(LanternFish(8))
+    combineMaps(
+      map.map(f => f.copy(_1 = f._1 - 1)),
+      map.get(0) match {
+        case Some(count) => Map(6 -> count) ++ Map(8 -> count)
+        case None => Map()
+      }
+    ).removed(-1)
   }
 }

@@ -2,75 +2,71 @@ package fish
 
 import fish.LanternFish._
 import org.scalatest.freespec.AnyFreeSpec
-import utils.FileReader.stringFileReader
 
 class LanternFishSpec extends AnyFreeSpec {
 
   private val input = "3,4,3,1,2"
 
-  "getListOfFish" - {
-    "must return list of fish" - {
-      "when given input string" in {
-        val result = getListOfFish(input)
-        val expectedResult = Seq(
-          LanternFish(3),
-          LanternFish(4),
-          LanternFish(3),
-          LanternFish(1),
-          LanternFish(2)
-        )
-        assertResult(expectedResult)(result)
-      }
+  "parseInput" - {
+    "must map the input to a seq of strings" in {
+      val result = parseInput(Seq(input))
+      val expectedResult = Seq(3, 4, 3, 1, 2)
+      assertResult(expectedResult)(result)
+    }
+  }
+
+  "getMap" - {
+    "must map the input to a map" in {
+      val result = getMap(Seq(3, 4, 3, 1, 1))
+      val expectedResult = Map(1 -> 2, 3 -> 2, 4 -> 1)
+      assertResult(expectedResult)(result)
     }
   }
 
   "simulateDay" - {
-    "must minus 1 from each lantern fish" in {
-      val lanternFish = Seq(
-        LanternFish(3)
-      )
-      val result = simulateDay(lanternFish)
-      val expectedResult = Seq(
-        LanternFish(2)
-      )
+    "must move counts down a day" in {
+      val input = Map(1 -> 2L, 3 -> 2L, 4 -> 1L)
+      val result = simulateDay(input)
+      val expectedResult = Map(0 -> 2, 2 -> 2, 3 -> 1)
       assertResult(expectedResult)(result)
     }
 
-    "must append new lantern fish if one reaches zero and reset 0 to 6" in {
-      val lanternFish = Seq(
-        LanternFish(0)
-      )
-      val result = simulateDay(lanternFish)
-      val expectedResult = Seq(
-        LanternFish(6),
-        LanternFish(8)
-      )
+    "must create a 6 and an 8 from a 0" in {
+      val input = Map(0 -> 1L, 7 -> 1L)
+      val result = simulateDay(input)
+      val expectedResult = Map(6 -> 2, 8 -> 1)
       assertResult(expectedResult)(result)
     }
   }
 
-  "simulateNDays" - {
-    "must simulate days" - {
-      "when 2 days" in {
-        val lanternFish = Seq(
-          LanternFish(0)
-        )
-        val result = simulateNDays(lanternFish, 2)
-        val expectedResult = Seq(
-          LanternFish(5),
-          LanternFish(7)
-        )
-        assertResult(expectedResult)(result)
+  "simulateDays" - {
+    "must move counts down for 2 days" in {
+      val input = Map(2 -> 2L, 3 -> 2L, 4 -> 1L)
+      val result = simulateDays(input, 2)
+      val expectedResult = Map(0 -> 2, 1 -> 2, 2 -> 1)
+      assertResult(expectedResult)(result)
+    }
+
+    "must create a 6 and an 8 from a 0" in {
+      val input = Map(0 -> 1L)
+      val result = simulateDays(input, 2)
+      val expectedResult = Map(5 -> 1, 7 -> 1)
+      assertResult(expectedResult)(result)
+    }
+  }
+
+  "run" - {
+    "when 80 days" - {
+      "must return 5934" in {
+        val result = LanternFish.run("/day-6-test-input.txt", 80)
+        assert(result == 5934L)
       }
     }
-  }
 
-  "modelPopulationGrowth" - {
-    "must return the number of fish after a given number of days" - {
-      "when given 80 days" in {
-        val input = stringFileReader("/day-6-test-input.txt")
-        val result = modelPopulationGrowth(input, 80)
-        assert(result == 5934)
+    "when 256 days" - {
+      "must return 5934" in {
+        val result = LanternFish.run("/day-6-test-input.txt", 256)
+        assert(result == 26984457539L)
       }
     }
   }
