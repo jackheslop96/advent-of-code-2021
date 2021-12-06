@@ -1,6 +1,6 @@
 package days.day3
 
-import utils.FileReader.stringFileReader
+import utils.FileReader.fileReader
 
 import scala.annotation.tailrec
 import scala.math.pow
@@ -8,7 +8,7 @@ import scala.math.pow
 object DiagnosticReport {
 
   def run(): Unit = {
-    val input = stringFileReader("/day-3-input.txt")
+    val input = fileReader("/day-3-input.txt")
     println(s"Day 3 part 1 result: ${powerConsumption(input)}")
     println(s"Day 3 part 2 result: ${lifeSupportRating(input)}")
     println()
@@ -65,13 +65,10 @@ object DiagnosticReport {
     })
 
   sealed trait Commonality
-
   case object MostCommon extends Commonality
-
   case object LeastCommon extends Commonality
 
   def mostCommon(chars: Seq[Char]): Char = commonality(chars, MostCommon)
-
   def leastCommon(chars: Seq[Char]): Char = commonality(chars, LeastCommon)
 
   private def commonality(chars: Seq[Char], commonality: Commonality): Char = {

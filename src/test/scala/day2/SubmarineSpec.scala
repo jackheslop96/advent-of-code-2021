@@ -1,7 +1,6 @@
 package day2
 
 import days.day2.Submarine
-import days.day2.Submarine._
 import org.scalatest.freespec.AnyFreeSpec
 
 class SubmarineSpec extends AnyFreeSpec {
@@ -51,19 +50,19 @@ class SubmarineSpec extends AnyFreeSpec {
     }
   }
 
-  ".applyInstructions" - {
-
-    "must return horizontal position of 15 and depth of 60 for 'forward 5, down 5, forward 8, up 3, down 8, forward 2'" in {
-      val instructions = Seq("forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2")
-      val result = applyInstructions(instructions)
-      assert(result.horizontalPosition == 15)
-      assert(result.depth == 60)
-      assert(result.multiplyPositions == 900)
+  "multiplyPositions" - {
+    "must return product of horizontal position and depth" in {
+      val result = Submarine(15, 10, 0)
+      assert(result.multiplyPositions == 150)
     }
   }
 
-  "multiplyPositions" - {
-    val result = Submarine(15, 10, 0)
-    assert(result.multiplyPositions == 150)
+  "run" - {
+    "when given example input" - {
+      "must return 900" in {
+        val result = Submarine.run("/day-2-test-input.txt")
+        assert(result == 900)
+      }
+    }
   }
 }

@@ -1,6 +1,6 @@
 package days.day6
 
-import utils.FileReader.stringFileReader
+import utils.FileReader.fileReader
 
 import scala.annotation.tailrec
 
@@ -14,7 +14,7 @@ object LanternFish {
   }
 
   def run(file: String, numberOfDays: Int): Long = {
-    val input = parseInput(stringFileReader(file))
+    val input = parseInput(fileReader(file))
     simulateDays(getMap(input), numberOfDays).values.sum
   }
 
@@ -40,9 +40,12 @@ object LanternFish {
       a ++ b.map { case (k, v) => k -> (v + a.getOrElse(k, 0L)) }
     }
 
-    combineMaps(
-      map.map(f => f.copy(_1 = f._1 - 1)).removed(-1),
-      map.get(0).fold(Map[Int, Long]())(count => Map(6 -> count) ++ Map(8 -> count))
-    )
+    val adjustedDays = map.map {
+      case (k, v) => k - 1 -> v
+    }.removed(-1)
+    
+    val afterSpawn = map.get(0).fold(Map[Int, Long]())(count => Map(6 -> count, 8 -> count))
+
+    combineMaps(adjustedDays, afterSpawn)
   }
 }

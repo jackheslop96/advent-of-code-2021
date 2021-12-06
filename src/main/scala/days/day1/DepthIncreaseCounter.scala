@@ -1,19 +1,24 @@
 package days.day1
 
-import utils.FileReader.intFileReader
+import utils.FileReader.fileReader
 
 import scala.annotation.tailrec
 
 object DepthIncreaseCounter {
 
   def run(): Unit = {
-    val input = intFileReader("/day-1-input.txt")
-    println(s"Day 1 part 1 result: ${countIncrements(input)}")
-    println(s"Day 1 part 2 result: ${countIncrements(input, 3)}")
+    val file = "/day-1-input.txt"
+    println(s"Day 1 part 1 result: ${run(file, 1)}")
+    println(s"Day 1 part 2 result: ${run(file, 3)}")
     println()
   }
 
-  def countIncrements(depths: Seq[Int], windowSize: Int = 1): Int = {
+  def run(file: String, windowSize: Int): Int = {
+    val input = fileReader(file).map(_.toInt)
+    countIncrements(input, windowSize)
+  }
+
+  def countIncrements(depths: Seq[Int], windowSize: Int): Int = {
 
     def sumOfFirstWindow(xs: Seq[Int]): Int = xs.take(windowSize).sum
 
@@ -22,16 +27,10 @@ object DepthIncreaseCounter {
       ds match {
         case Nil =>
           counter
-        case _ :: tail if tail.size >= windowSize =>
-          val firstSum = sumOfFirstWindow(ds)
-          val nextSum = sumOfFirstWindow(tail)
-          if (nextSum > firstSum) {
-            rec(tail, counter + 1)
-          } else {
-            rec(tail, counter)
-          }
-        case _ =>
-          rec(ds.tail, counter)
+        case _ :: tail if tail.size >= windowSize && sumOfFirstWindow(tail) > sumOfFirstWindow(ds) =>
+          rec(tail, counter + 1)
+        case _ :: tail =>
+          rec(tail, counter)
       }
     }
 

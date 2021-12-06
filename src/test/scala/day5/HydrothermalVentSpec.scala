@@ -1,9 +1,9 @@
 package day5
 
-import days.day5.Coordinate
+import days.day5.{Coordinate, HydrothermalVent}
 import days.day5.HydrothermalVent._
 import org.scalatest.freespec.AnyFreeSpec
-import utils.FileReader.stringFileReader
+import utils.FileReader.fileReader
 
 class HydrothermalVentSpec extends AnyFreeSpec {
 
@@ -117,7 +117,7 @@ class HydrothermalVentSpec extends AnyFreeSpec {
   "generateAllCoordinates" - {
     "must generate all coordinates" - {
 
-      val input = stringFileReader("/day-5-test-input.txt")
+      val input = fileReader("/day-5-test-input.txt")
 
       "when given a list of coordinate pairs and not including diagonals" in {
         val result = generateAllCoordinates(input, includeDiagonals = false)
@@ -257,6 +257,27 @@ class HydrothermalVentSpec extends AnyFreeSpec {
           Coordinate(0, 2)
         ))
         assert(result == 2)
+      }
+    }
+  }
+
+  "run" - {
+    "when given example input" - {
+
+      val file = "/day-5-test-input.txt"
+
+      "when including diagonals" - {
+        "must return 5" in {
+          val result = HydrothermalVent.run(file, includeDiagonals = false)
+          assert(result == 5)
+        }
+      }
+
+      "when including diagonals" - {
+        "must return 12" in {
+          val result = HydrothermalVent.run(file, includeDiagonals = true)
+          assert(result == 12)
+        }
       }
     }
   }

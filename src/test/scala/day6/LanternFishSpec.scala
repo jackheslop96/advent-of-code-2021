@@ -57,16 +57,19 @@ class LanternFishSpec extends AnyFreeSpec {
   }
 
   "run" - {
+
+    val file = "/day-6-test-input.txt"
+
     "when 80 days" - {
       "must return 5934" in {
-        val result = LanternFish.run("/day-6-test-input.txt", 80)
+        val result = LanternFish.run(file, 80)
         assert(result == 5934L)
       }
     }
 
     "when 256 days" - {
       "must return 5934" in {
-        val result = LanternFish.run("/day-6-test-input.txt", 256)
+        val result = LanternFish.run(file, 256)
         assert(result == 26984457539L)
       }
     }

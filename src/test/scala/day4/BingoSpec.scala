@@ -3,7 +3,7 @@ package day4
 import days.day4.Bingo._
 import days.day4.{BingoBoard, BingoNumber}
 import org.scalatest.freespec.AnyFreeSpec
-import utils.FileReader.stringFileReader
+import utils.FileReader.fileReader
 
 class BingoSpec extends AnyFreeSpec {
 
@@ -56,13 +56,13 @@ class BingoSpec extends AnyFreeSpec {
 
   "playGame" - {
     "when given example input" - {
-      val lines = stringFileReader("/day-4-test-input.txt")
+      val lines = fileReader("/day-4-test-input.txt")
       val result = playGame(lines)
       "must return score of 4512 for winner" in {
-        assert(result.head._2 == 4512)
+        assert(result.head == 4512)
       }
       "must return score of 1924 for loser" in {
-        assert(result.last._2 == 1924)
+        assert(result.last == 1924)
       }
     }
   }

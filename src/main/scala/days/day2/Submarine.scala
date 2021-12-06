@@ -1,6 +1,6 @@
 package days.day2
 
-import utils.FileReader.stringFileReader
+import utils.FileReader.fileReader
 
 case class Submarine(horizontalPosition: Int, depth: Int, aim: Int) {
 
@@ -18,15 +18,21 @@ case class Submarine(horizontalPosition: Int, depth: Int, aim: Int) {
 
 object Submarine {
 
+  def apply(): Submarine = new Submarine(0, 0, 0)
+
   def run(): Unit = {
-    val input = stringFileReader("/day-2-input.txt")
-    println(s"Day 2 part 2 result: ${applyInstructions(input)}")
+    val file = "/day-2-input.txt"
+    println(s"Day 2 part 2 result: ${run(file)}")
     println()
   }
 
-  def apply(): Submarine = new Submarine(0, 0, 0)
+  def run(file: String): Int = {
+    val input = fileReader(file)
+    applyInstructions(input).multiplyPositions
+  }
 
-  def applyInstructions(instructions: Seq[String]): Submarine = instructions.foldLeft(Submarine())((submarine, instruction) => {
-    submarine.applyInstruction(instruction)
-  })
+  private def applyInstructions(instructions: Seq[String]): Submarine = instructions
+    .foldLeft(Submarine())((submarine, instruction) => {
+      submarine.applyInstruction(instruction)
+    })
 }

@@ -2,23 +2,11 @@ package day3
 
 import days.day3.DiagnosticReport._
 import org.scalatest.freespec.AnyFreeSpec
+import utils.FileReader.fileReader
 
 class DiagnosticReportSpec extends AnyFreeSpec {
 
-  private val lines = Seq(
-    "00100",
-    "11110",
-    "10110",
-    "10111",
-    "10101",
-    "01111",
-    "00111",
-    "11100",
-    "10000",
-    "11001",
-    "00010",
-    "01010"
-  )
+  private val lines = fileReader("/day-3-test-input.txt")
 
   "gammaRate" - {
     "must return 10110" - {

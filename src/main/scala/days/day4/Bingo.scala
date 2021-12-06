@@ -1,6 +1,6 @@
 package days.day4
 
-import utils.FileReader.stringFileReader
+import utils.FileReader.fileReader
 
 import scala.annotation.tailrec
 
@@ -14,10 +14,15 @@ case class Bingo(numbersToDraw: Seq[Int], boards: Seq[BingoBoard]) {
 object Bingo {
 
   def run(): Unit = {
-    val input = stringFileReader("/day-4-input.txt")
-    println("Day 4 result:")
-    playGame(input).foreach(x => println(s"${x._1}: ${x._2}"))
+    val result = run("/day-4-input.txt")
+    println(s"Day 4 part 1 result: ${result.head}")
+    println(s"Day 4 part 2 result: ${result.last}")
     println()
+  }
+
+  def run(file: String): Seq[Int] = {
+    val input = fileReader(file)
+    playGame(input)
   }
 
   def initialise(lines: Seq[String]): Bingo = {
@@ -27,16 +32,16 @@ object Bingo {
     def rec(lines: Seq[String], acc: Seq[BingoBoard] = Nil): Seq[BingoBoard] = {
       lines match {
         case Nil => acc
-        case _ :: tail => rec(tail.drop(5), acc :+ BingoBoard.initialise(tail.take(5)))
+        case _ :: tail => rec(tail.drop(5), acc :+ BingoBoard.initialise(tail.take(5))) // 5x5 grid
       }
     }
 
     Bingo(drawnNumbers, rec(lines.tail))
   }
 
-  def playGame(lines: Seq[String]): Seq[(Int, Int)] = {
+  def playGame(lines: Seq[String]): Seq[Int] = {
     @tailrec
-    def rec(game: Bingo, acc: Seq[(Int, Int)] = Nil): Seq[(Int, Int)] = {
+    def rec(game: Bingo, acc: Seq[Int] = Nil): Seq[Int] = {
       game.numbersToDraw match {
         case Nil =>
           acc
@@ -53,7 +58,7 @@ object Bingo {
             case boards =>
               rec(
                 game = updatedGame.copy(boards = updatedBoards.filterNot(_.isComplete)),
-                acc = acc ++ boards.map(x => (acc.size + 1, x.sumOfUnmarkedNumbers * number))
+                acc = acc ++ boards.map(_.sumOfUnmarkedNumbers * number)
               )
           }
       }

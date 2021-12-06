@@ -1,18 +1,20 @@
 package days.day5
 
-import utils.FileReader.stringFileReader
+import utils.FileReader.fileReader
 
 object HydrothermalVent {
 
   def run(): Unit = {
-    val input = stringFileReader("/day-5-input.txt")
-    println(s"Day 5 part 1 result: ${run(input, includeDiagonals = false)}")
-    println(s"Day 5 part 2 result: ${run(input, includeDiagonals = true)}")
+    val file = "/day-5-input.txt"
+    println(s"Day 5 part 1 result: ${run(file, includeDiagonals = false)}")
+    println(s"Day 5 part 2 result: ${run(file, includeDiagonals = true)}")
     println()
   }
 
-  def run(lines: Seq[String], includeDiagonals: Boolean): Int =
-    countDangerousAreas(generateAllCoordinates(lines, includeDiagonals))
+  def run(file: String, includeDiagonals: Boolean): Int = {
+    val input = fileReader(file)
+    countDangerousAreas(generateAllCoordinates(input, includeDiagonals))
+  }
 
   def countDangerousAreas(coordinates: Seq[Coordinate]): Int =
     coordinates

@@ -17,13 +17,12 @@ case class BingoBoard(numbers: Seq[Seq[BingoNumber]]) {
 
 object BingoBoard {
   def initialise(lines: Seq[String]): BingoBoard = {
-    val numbers = lines.map(line => {
-      line
-        .split(" ")
-        .filterNot(_.trim.isEmpty)
-        .map(x => BingoNumber(x.toInt))
-        .toSeq
-    })
+    val numbers = lines.map(_
+      .split(" ")
+      .filterNot(_.trim.isEmpty)
+      .map(x => BingoNumber(x.toInt))
+      .toSeq
+    )
 
     BingoBoard(numbers)
   }
