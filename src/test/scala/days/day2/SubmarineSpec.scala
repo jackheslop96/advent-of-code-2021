@@ -1,4 +1,4 @@
-package day2
+package days.day2
 
 import days.day2.Submarine
 import org.scalatest.freespec.AnyFreeSpec

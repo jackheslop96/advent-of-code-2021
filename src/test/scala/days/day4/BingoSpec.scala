@@ -1,4 +1,4 @@
-package day4
+package days.day4
 
 import days.day4.Bingo._
 import days.day4.{BingoBoard, BingoNumber}

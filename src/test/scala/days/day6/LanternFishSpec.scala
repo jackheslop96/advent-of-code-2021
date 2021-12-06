@@ -1,4 +1,4 @@
-package day6
+package days.day6
 
 import days.day6.LanternFish
 import days.day6.LanternFish._

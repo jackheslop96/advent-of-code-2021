@@ -1,6 +1,5 @@
-package day1
+package days.day1
 
-import days.day1.DepthIncreaseCounter
 import days.day1.DepthIncreaseCounter._
 import org.scalatest.freespec.AnyFreeSpec
 

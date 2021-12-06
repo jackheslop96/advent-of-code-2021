@@ -1,4 +1,4 @@
-package day5
+package days.day5
 
 import days.day5.{Coordinate, HydrothermalVent}
 import days.day5.HydrothermalVent._

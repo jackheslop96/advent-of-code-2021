@@ -43,7 +43,7 @@ object LanternFish {
     val adjustedDays = map.map {
       case (k, v) => k - 1 -> v
     }.removed(-1)
-    
+
     val afterSpawn = map.get(0).fold(Map[Int, Long]())(count => Map(6 -> count, 8 -> count))
 
     combineMaps(adjustedDays, afterSpawn)

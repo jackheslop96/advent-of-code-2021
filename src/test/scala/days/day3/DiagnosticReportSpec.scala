@@ -1,4 +1,4 @@
-package day3
+package days.day3
 
 import days.day3.DiagnosticReport._
 import org.scalatest.freespec.AnyFreeSpec
