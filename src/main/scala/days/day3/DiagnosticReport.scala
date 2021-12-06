@@ -73,10 +73,8 @@ object DiagnosticReport {
 
   private def commonality(chars: Seq[Char], commonality: Commonality): Char = {
     (chars.count(_ == '0'), chars.count(_ == '1'), commonality) match {
-      case (x, y, LeastCommon) if x == y || x < y => '0'
-      case (x, y, MostCommon) if x == y || x < y => '1'
-      case (_, _, LeastCommon) => '1'
-      case (_, _, MostCommon) => '0'
+      case (zeros, ones, MostCommon)  => if (zeros > ones) '0' else '1'
+      case (zeros, ones, LeastCommon) => if (ones < zeros) '1' else '0'
     }
   }
 
