@@ -1,8 +1,17 @@
-package vent
+package days.day5
+
+import utils.FileReader.stringFileReader
 
 object HydrothermalVent {
 
-  def apply(lines: Seq[String], includeDiagonals: Boolean): Int =
+  def run(): Unit = {
+    val input = stringFileReader("/day-5-input.txt")
+    println(s"Day 5 part 1 result: ${run(input, includeDiagonals = false)}")
+    println(s"Day 5 part 2 result: ${run(input, includeDiagonals = true)}")
+    println()
+  }
+
+  def run(lines: Seq[String], includeDiagonals: Boolean): Int =
     countDangerousAreas(generateAllCoordinates(lines, includeDiagonals))
 
   def countDangerousAreas(coordinates: Seq[Coordinate]): Int =
@@ -27,7 +36,7 @@ object HydrothermalVent {
         case (xs, ys) if ys.size == 1 => (xs, List.fill(xs.size)(ys.head))
         case (xs, ys) => (xs, ys)
       }
-      
+
       xList
         .zip(yList)
         .map(c => Coordinate(c._1, c._2))

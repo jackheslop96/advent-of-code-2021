@@ -1,7 +1,7 @@
-package submarine
+package day1
 
+import days.day1.DepthIncreaseCounter._
 import org.scalatest.freespec.AnyFreeSpec
-import submarine.DepthIncreaseCounter._
 
 class DepthIncreaseCounterSpec extends AnyFreeSpec {
 

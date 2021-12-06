@@ -1,7 +1,8 @@
-package submarine
+package day2
 
+import days.day2.Submarine
+import days.day2.Submarine._
 import org.scalatest.freespec.AnyFreeSpec
-import submarine.Submarine.applyInstructions
 
 class SubmarineSpec extends AnyFreeSpec {
 

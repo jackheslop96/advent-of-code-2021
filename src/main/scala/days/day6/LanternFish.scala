@@ -1,10 +1,17 @@
-package fish
+package days.day6
 
 import utils.FileReader.stringFileReader
 
 import scala.annotation.tailrec
 
 object LanternFish {
+
+  def run(): Unit = {
+    val file = "/day-6-input.txt"
+    println(s"Day 6 part 1 result: ${run(file, 80)}")
+    println(s"Day 6 part 2 result: ${run(file, 256)}")
+    println()
+  }
 
   def run(file: String, numberOfDays: Int): Long = {
     val input = parseInput(stringFileReader(file))
@@ -33,6 +40,7 @@ object LanternFish {
         case _ => rec(simulateDay(acc), daysRemaining - 1)
       }
     }
+
     rec(map, numberOfDays)
   }
 

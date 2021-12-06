@@ -1,4 +1,6 @@
-package bingo
+package days.day4
+
+import utils.FileReader.stringFileReader
 
 import scala.annotation.tailrec
 
@@ -10,6 +12,14 @@ case class Bingo(numbersToDraw: Seq[Int], boards: Seq[BingoBoard]) {
 }
 
 object Bingo {
+
+  def run(): Unit = {
+    val input = stringFileReader("/day-4-input.txt")
+    println("Day 4 result:")
+    playGame(input).foreach(x => println(s"${x._1}: ${x._2}"))
+    println()
+  }
+
   def initialise(lines: Seq[String]): Bingo = {
     val drawnNumbers = lines.head.split(",").map(_.toInt).toSeq
 

@@ -1,6 +1,7 @@
-package bingo
+package day4
 
-import bingo.BingoBoard.initialise
+import days.day4.BingoBoard._
+import days.day4.{BingoBoard, BingoNumber}
 import org.scalatest.freespec.AnyFreeSpec
 
 class BingoBoardSpec extends AnyFreeSpec {

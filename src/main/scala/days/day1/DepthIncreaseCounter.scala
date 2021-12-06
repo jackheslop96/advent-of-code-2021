@@ -1,8 +1,17 @@
-package submarine
+package days.day1
+
+import utils.FileReader.intFileReader
 
 import scala.annotation.tailrec
 
 object DepthIncreaseCounter {
+
+  def run(): Unit = {
+    val input = intFileReader("/day-1-input.txt")
+    println(s"Day 1 part 1 result: ${countIncrements(input)}")
+    println(s"Day 1 part 2 result: ${countIncrements(input, 3)}")
+    println()
+  }
 
   def countIncrements(depths: Seq[Int], windowSize: Int = 1): Int = {
 

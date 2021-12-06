@@ -1,9 +1,18 @@
-package submarine
+package days.day3
+
+import utils.FileReader.stringFileReader
 
 import scala.annotation.tailrec
 import scala.math.pow
 
 object DiagnosticReport {
+
+  def run(): Unit = {
+    val input = stringFileReader("/day-3-input.txt")
+    println(s"Day 3 part 1 result: ${powerConsumption(input)}")
+    println(s"Day 3 part 2 result: ${lifeSupportRating(input)}")
+    println()
+  }
 
   def gammaRate(lines: Seq[String]): String =
     buildBitString(lines)(mostCommon)

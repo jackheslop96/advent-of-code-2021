@@ -1,6 +1,7 @@
-package bingo
+package day4
 
-import bingo.Bingo._
+import days.day4.Bingo._
+import days.day4.{BingoBoard, BingoNumber}
 import org.scalatest.freespec.AnyFreeSpec
 import utils.FileReader.stringFileReader
 

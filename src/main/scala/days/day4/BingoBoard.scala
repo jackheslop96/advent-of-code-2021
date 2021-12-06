@@ -1,4 +1,4 @@
-package bingo
+package days.day4
 
 case class BingoBoard(numbers: Seq[Seq[BingoNumber]]) {
 

@@ -1,6 +1,7 @@
-package fish
+package day6
 
-import fish.LanternFish._
+import days.day6.LanternFish
+import days.day6.LanternFish._
 import org.scalatest.freespec.AnyFreeSpec
 
 class LanternFishSpec extends AnyFreeSpec {

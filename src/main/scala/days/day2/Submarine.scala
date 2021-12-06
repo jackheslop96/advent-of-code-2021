@@ -1,4 +1,6 @@
-package submarine
+package days.day2
+
+import utils.FileReader.stringFileReader
 
 case class Submarine(horizontalPosition: Int, depth: Int, aim: Int) {
 
@@ -15,6 +17,13 @@ case class Submarine(horizontalPosition: Int, depth: Int, aim: Int) {
 }
 
 object Submarine {
+
+  def run(): Unit = {
+    val input = stringFileReader("/day-2-input.txt")
+    println(s"Day 2 part 2 result: ${applyInstructions(input)}")
+    println()
+  }
+
   def apply(): Submarine = new Submarine(0, 0, 0)
 
   def applyInstructions(instructions: Seq[String]): Submarine = instructions.foldLeft(Submarine())((submarine, instruction) => {

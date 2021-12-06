@@ -1,7 +1,7 @@
-package submarine
+package day3
 
+import days.day3.DiagnosticReport._
 import org.scalatest.freespec.AnyFreeSpec
-import submarine.DiagnosticReport._
 
 class DiagnosticReportSpec extends AnyFreeSpec {
 

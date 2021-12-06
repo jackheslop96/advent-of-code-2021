@@ -1,5 +1,6 @@
-package bingo
+package day4
 
+import days.day4.BingoNumber
 import org.scalatest.freespec.AnyFreeSpec
 
 class BingoNumberSpec extends AnyFreeSpec {

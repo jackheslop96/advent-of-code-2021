@@ -1,8 +1,9 @@
-package vent
+package day5
 
+import days.day5.Coordinate
+import days.day5.HydrothermalVent._
 import org.scalatest.freespec.AnyFreeSpec
 import utils.FileReader.stringFileReader
-import vent.HydrothermalVent._
 
 class HydrothermalVentSpec extends AnyFreeSpec {
 
