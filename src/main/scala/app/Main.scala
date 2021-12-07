@@ -6,6 +6,7 @@ import days.day3.DiagnosticReport
 import days.day4.Bingo
 import days.day5.HydrothermalVent
 import days.day6.LanternFish
+import days.day7.Crab
 
 object Main extends App {
 
@@ -26,4 +27,7 @@ object Main extends App {
 
   // Day 6
   LanternFish.run()
+
+  // Day 7
+  Crab.run()
 }
