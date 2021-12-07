@@ -14,16 +14,22 @@ object Crab {
   }
 
   def run(file: String, burnsFuelAtConstantRate: Boolean): Int = {
-    val input = fileReader(file).head.split(",").map(_.toInt)
-    val range = input.min to input.max
+    val positions = fileReader(file).head.split(",").map(_.toInt)
+    val range = positions.min to positions.max
 
+    /**
+     *
+     * @param aps all of the possible alignment positions for a given input
+     * @param outcomes an accumulator of the total fuel usage for each alignment position
+     * @return the minimum possible outcome
+     */
     @tailrec
-    def rec(xs: Seq[Int], acc: Seq[Int] = Nil): Int = {
-      xs match {
-        case Nil => acc.min
-        case head :: tail => rec(
+    def rec(aps: Seq[Int], outcomes: Seq[Int] = Nil): Int = {
+      aps match {
+        case Nil => outcomes.min
+        case ap :: tail => rec(
           tail,
-          acc :+ input.map(x => fuelUsage(x, head, burnsFuelAtConstantRate)).sum
+          outcomes :+ positions.map(fuelUsage(_, ap, burnsFuelAtConstantRate)).sum
         )
       }
     }
