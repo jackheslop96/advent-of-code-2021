@@ -20,7 +20,7 @@ object Crab {
     /**
      *
      * @param aps all of the possible alignment positions for a given input
-     * @param outcomes an accumulator of the total fuel usage for each alignment position
+     * @param outcomes stores the total fuel usage for each alignment position
      * @return the minimum possible outcome
      */
     @tailrec
