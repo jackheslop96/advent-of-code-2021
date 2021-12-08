@@ -8,34 +8,26 @@ object SevenSegmentSearch {
 
   def run(): Unit = {
     val file = "/day-8-input.txt"
-    println(s"Day 8 part 1 result: ${countOutputsWithUniqueNumberOfSegments(file)}")
-    println(s"Day 8 part 2 result: ${run(file)}")
+    println(s"Day 8 part 1 result: ${part1(file)}")
+    println(s"Day 8 part 2 result: ${part2(file)}")
   }
 
-  def run(file: String): Int = {
+  def part1(file: String): Int = {
+    val uniqueValues = Seq(1, 4, 7, 8)
+    run(file).flatten.count(uniqueValues.contains(_))
+  }
+
+  def part2(file: String): Int = {
+    run(file).map(_.mkString.toInt).sum
+  }
+
+  private def run(file: String): Seq[Seq[Int]] = {
     val lines = fileReader(file)
-    lines.foldLeft(0)((acc, line) => {
+    lines.foldLeft[Seq[Seq[Int]]](Nil)((acc, line) => {
       val splitLine = line.split(" \\| ")
       val deducedNumbers = deduceNumbers(splitLine.head)
-      acc + deduceOutput(splitLine.last, deducedNumbers)
+      acc :+ deduceOutput(splitLine.last, deducedNumbers)
     })
-  }
-
-  def countOutputsWithUniqueNumberOfSegments(file: String): Int = {
-    val input = fileReader(file).map(x => x.split(" \\| ").last)
-    val uniqueLengths = Seq(2, 3, 4, 7)
-
-    @tailrec
-    def rec(xs: Seq[String], count: Int = 0): Int = {
-      xs match {
-        case Nil => count
-        case head :: tail =>
-          val outputDigits = head.split(" ")
-          rec(tail, count + outputDigits.count(od => uniqueLengths.contains(od.length)))
-      }
-    }
-
-    rec(input)
   }
 
   def deduceNumbers(line: String): Map[Int, String] = {
@@ -88,9 +80,8 @@ object SevenSegmentSearch {
   }
 
   // checks to see whether the characters in a shorter string are ALL contained within a longer string
-  private def longerStringContainsAllCharactersInShorterString(longerString: String, shorterString: String): Boolean = {
+  private def longerStringContainsAllCharactersInShorterString(longerString: String, shorterString: String): Boolean =
     shorterString.forall(c => longerString.contains(c))
-  }
 
   // used to deduce if a string corresponds to 5 by seeing if it is the same as the 6 string bar the 1 missing character
   // i.e.
@@ -112,13 +103,13 @@ object SevenSegmentSearch {
     longerStringContainsAllCharactersInShorterString(longerString = stringToCheck, shorterString = sevenString)
 
   // gets the number that each string corresponds to and squashes them together to make one big number
-  def deduceOutput(line: String, map: Map[Int, String]): Int = {
-    line.split(" ").foldLeft[Seq[String]](Nil)((acc, s) => {
+  def deduceOutput(line: String, map: Map[Int, String]): Seq[Int] = {
+    line.split(" ").foldLeft[Seq[Int]](Nil)((acc, s) => {
       map.find(_._2.sorted == s.sorted) match {
-        case Some((key, _)) => acc :+ key.toString
+        case Some((key, _)) => acc :+ key
         case _ => acc
       }
-    }).mkString.toInt
+    })
   }
 
 }

@@ -7,10 +7,10 @@ class SevenSegmentSearchSpec extends AnyFreeSpec {
 
   private val file = "/day-8-test-input.txt"
 
-  "countOutputsWithUniqueNumberOfSegments" - {
+  "part1" - {
     "when given example input" - {
       "must return 26" in {
-        val result = countOutputsWithUniqueNumberOfSegments(file)
+        val result = part1(file)
         assert(result == 26)
       }
     }
@@ -201,15 +201,15 @@ class SevenSegmentSearchSpec extends AnyFreeSpec {
           9 -> "cefabd"
         )
         val result = deduceOutput("cdfeb fcadb cdfeb cdbaf", map)
-        assert(result == 5353)
+        assert(result == Seq(5, 3, 5, 3))
       }
     }
   }
 
-  "run" - {
+  "part2" - {
     "when given the example input" - {
       "must return 61229" in {
-        val result = SevenSegmentSearch.run(file)
+        val result = part2(file)
         assert(result == 61229)
       }
     }
