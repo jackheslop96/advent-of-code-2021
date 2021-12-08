@@ -66,24 +66,24 @@ object SevenSegmentSearch {
   // uses 7 to figure out 3
   // uses 6 to figure out 5 and 2
   def deduceNumber(string: String, map: Map[Int, String]): Option[Int] = {
-    string match {
-      case s if s.length == 2 => Some(1)
-      case s if s.length == 3 => Some(7)
-      case s if s.length == 4 => Some(4)
-      case s if s.length == 7 => Some(8)
-      case s if s.length == 5 =>
+    string.length match {
+      case 2 => Some(1)
+      case 3 => Some(7)
+      case 4 => Some(4)
+      case 7 => Some(8)
+      case 5 =>
         map.get(7) flatMap {
-          case value if string1ContainsAllString2Characters(s, value) => Some(3)
+          case value if string1ContainsAllString2Characters(string, value) => Some(3)
           case _ => map.get(6) map {
-            case value if string2ContainsAllString1CharactersBarOne(s, value) => 5
+            case value if string2ContainsAllString1CharactersBarOne(string, value) => 5
             case _ => 2
           }
         }
-      case s if s.length == 6 =>
+      case 6 =>
         map.get(1) flatMap {
-          case value if !string1ContainsAllString2Characters(s, value) => Some(6)
+          case value if !string1ContainsAllString2Characters(string, value) => Some(6)
           case _ => map.get(4) map {
-            case value if string1ContainsAllString2Characters(s, value) => 9
+            case value if string1ContainsAllString2Characters(string, value) => 9
             case _ => 0
           }
         }
@@ -100,7 +100,7 @@ object SevenSegmentSearch {
   //      _         _
   //     |_   and  |_
   //      _|       |_|
-  // are the same bar one pipe
+  // are the same bar one character
   def string2ContainsAllString1CharactersBarOne(string1: String, string2: String): Boolean = {
     string2.length == string1.length + 1 && string1ContainsAllString2Characters(string2, string1)
   }
