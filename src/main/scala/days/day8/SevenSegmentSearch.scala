@@ -98,7 +98,7 @@ object SevenSegmentSearch {
   private def isThreeString(stringToCheck: String, sevenString: String): Boolean =
     longerStringContainsAllCharactersInShorterString(longerString = stringToCheck, shorterString = sevenString)
 
-  // gets the number that each string corresponds to and squashes them together to make one big number
+  // gets the number that each string corresponds to
   def deduceOutput(line: String, map: Map[Int, String]): Seq[Int] =
     line.split(" ").foldLeft[Seq[Int]](Nil)((acc, s) => {
       map.find(_._2.sorted == s.sorted) match {
