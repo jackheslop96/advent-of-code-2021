@@ -209,7 +209,7 @@ class SevenSegmentSearchSpec extends AnyFreeSpec {
   "run" - {
     "when given the example input" - {
       "must return 61229" in {
-        val result = SevenSegmentSearch.run("/day-8-test-input.txt")
+        val result = SevenSegmentSearch.run(file)
         assert(result == 61229)
       }
     }

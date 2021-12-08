@@ -42,6 +42,10 @@ object SevenSegmentSearch {
   def deduceNumbers(line: String): Map[Int, String] = {
     val strings = line.split(" ").toList
 
+    // tries to deduce the string at the front of the queue
+    // if it can, it updates the map and removes that string from the queue
+    // if it can't, it leaves the map as is and sends the string to the back of the queue
+    // the idea being that eventually it will have built up enough information to figure out each string
     @tailrec
     def rec(xs: List[String], acc: Map[Int, String] = Map()): Map[Int, String] = {
       xs match {
@@ -86,14 +90,22 @@ object SevenSegmentSearch {
     }
   }
 
+  // checks to see whether the characters in one shorter string are ALL contained within a longer string
   private def string1ContainsAllString2Characters(string1: String, string2: String): Boolean = {
     string2.forall(c => string1.contains(c))
   }
 
+  // used to deduce if a string corresponds to 5 by seeing if it is the same as the 6 string bar the 1 missing character
+  // i.e.
+  //      _         _
+  //     |_   and  |_
+  //      _|       |_|
+  // are the same bar one pipe
   def string2ContainsAllString1CharactersBarOne(string1: String, string2: String): Boolean = {
     string2.length == string1.length + 1 && string1ContainsAllString2Characters(string2, string1)
   }
 
+  // gets the number that each string corresponds to and squashes them together to make one big number
   def deduceOutput(line: String, map: Map[Int, String]): Int = {
     val sortedMap = map.map(kv => kv._1 -> kv._2.sorted)
     line.split(" ").foldLeft[Seq[String]](Nil)((acc, s) => {
