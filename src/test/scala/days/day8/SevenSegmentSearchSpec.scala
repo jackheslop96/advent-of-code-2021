@@ -151,17 +151,17 @@ class SevenSegmentSearchSpec extends AnyFreeSpec {
     "must return true" - {
 
       "when given abcd and abcde" in {
-        val result = string2ContainsAllString1CharactersBarOne("abcd", "abcde")
+        val result = isFiveString("abcd", "abcde")
         assertResult(true)(result)
       }
 
       "when given abc and dbca" in {
-        val result = string2ContainsAllString1CharactersBarOne("abc", "dbca")
+        val result = isFiveString("abc", "dbca")
         assertResult(true)(result)
       }
 
       "when given cdfbe and cdfgeb" in {
-        val result = string2ContainsAllString1CharactersBarOne("cdfbe", "cdfgeb")
+        val result = isFiveString("cdfbe", "cdfgeb")
         assertResult(true)(result)
       }
     }
@@ -169,17 +169,17 @@ class SevenSegmentSearchSpec extends AnyFreeSpec {
     "must return false" - {
 
       "when given foo and bar" in {
-        val result = string2ContainsAllString1CharactersBarOne("foo", "bar")
+        val result = isFiveString("foo", "bar")
         assertResult(false)(result)
       }
 
       "when given abc and abde" in {
-        val result = string2ContainsAllString1CharactersBarOne("abc", "abde")
+        val result = isFiveString("abc", "abde")
         assertResult(false)(result)
       }
 
       "when given abc and abcde" in {
-        val result = string2ContainsAllString1CharactersBarOne("abc", "abcde")
+        val result = isFiveString("abc", "abcde")
         assertResult(false)(result)
       }
     }
