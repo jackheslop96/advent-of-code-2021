@@ -17,9 +17,8 @@ object SevenSegmentSearch {
     run(file).flatten.count(uniqueValues.contains(_))
   }
 
-  def part2(file: String): Int = {
+  def part2(file: String): Int =
     run(file).map(_.mkString.toInt).sum
-  }
 
   private def run(file: String): Seq[Seq[Int]] = {
     val lines = fileReader(file)
@@ -31,8 +30,6 @@ object SevenSegmentSearch {
   }
 
   def deduceNumbers(line: String): Map[Int, String] = {
-    val strings = line.split(" ").toList
-
     // tries to deduce the number corresponding to the string at the front of the queue
     // if it can, it updates the map and removes that string from the queue
     // if it can't, it leaves the map as it is and sends the string to the back of the queue
@@ -48,7 +45,7 @@ object SevenSegmentSearch {
       }
     }
 
-    rec(strings)
+    rec(line.split(" ").toList)
   }
 
   // figures out 1, 4, 7 and 8
@@ -56,7 +53,7 @@ object SevenSegmentSearch {
   // uses 4 to figure out 9 and 0
   // uses 7 to figure out 3
   // uses 6 to figure out 5 and 2
-  def deduceNumber(string: String, map: Map[Int, String]): Option[Int] = {
+  def deduceNumber(string: String, map: Map[Int, String]): Option[Int] =
     string.length match {
       case 2 => Some(1)
       case 3 => Some(7)
@@ -77,7 +74,6 @@ object SevenSegmentSearch {
         }
       }
     }
-  }
 
   // checks to see whether the characters in a shorter string are ALL contained within a longer string
   private def longerStringContainsAllCharactersInShorterString(longerString: String, shorterString: String): Boolean =
@@ -103,13 +99,12 @@ object SevenSegmentSearch {
     longerStringContainsAllCharactersInShorterString(longerString = stringToCheck, shorterString = sevenString)
 
   // gets the number that each string corresponds to and squashes them together to make one big number
-  def deduceOutput(line: String, map: Map[Int, String]): Seq[Int] = {
+  def deduceOutput(line: String, map: Map[Int, String]): Seq[Int] =
     line.split(" ").foldLeft[Seq[Int]](Nil)((acc, s) => {
       map.find(_._2.sorted == s.sorted) match {
         case Some((key, _)) => acc :+ key
         case _ => acc
       }
     })
-  }
 
 }
