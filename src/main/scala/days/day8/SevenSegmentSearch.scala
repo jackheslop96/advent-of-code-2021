@@ -79,7 +79,7 @@ object SevenSegmentSearch {
   private def longerStringContainsAllCharactersInShorterString(longerString: String, shorterString: String): Boolean =
     shorterString.forall(c => longerString.contains(c))
 
-  // used to deduce if a string corresponds to 5 by seeing if it is the same as the 6 string bar the 1 missing character
+  // used to deduce if a string corresponds to 5 by seeing if it is the same as the six string bar the 1 missing character
   // i.e.
   //      _         _
   //     |_   and  |_
@@ -89,12 +89,15 @@ object SevenSegmentSearch {
     sixString.length == stringToCheck.length + 1 &&
       longerStringContainsAllCharactersInShorterString(longerString = sixString, shorterString = stringToCheck)
 
+  // uses the fact that the six string is the only string with 6 characters not to contain the one string
   private def isSixString(stringToCheck: String, oneString: String): Boolean =
     !longerStringContainsAllCharactersInShorterString(longerString = stringToCheck, shorterString = oneString)
 
+  // uses the fact that the nine string is the only string with 6 characters to contain the four string
   private def isNineString(stringToCheck: String, fourString: String): Boolean =
     longerStringContainsAllCharactersInShorterString(longerString = stringToCheck, shorterString = fourString)
 
+  // uses the fact that the three string is the only string with 5 characters to contain the seven string
   private def isThreeString(stringToCheck: String, sevenString: String): Boolean =
     longerStringContainsAllCharactersInShorterString(longerString = stringToCheck, shorterString = sevenString)
 
