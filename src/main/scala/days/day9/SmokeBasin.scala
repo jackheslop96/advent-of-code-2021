@@ -8,7 +8,7 @@ object SmokeBasin {
 
   case class Coordinate(x: Int, y: Int)
   case class Direction(x: Int, y: Int)
-  case class Location(coordinate: Coordinate, value: Int)
+  case class Location(coordinate: Coordinate, height: Int)
 
   def run(): Unit = {
     val file = "/day-9-input.txt"
@@ -20,7 +20,7 @@ object SmokeBasin {
   def part1(file: String): Int = {
     val matrix = initialiseMatrix(file)
     findLowPoints(matrix)
-      .map(_.value + 1)
+      .map(_.height + 1)
       .sum
   }
 
@@ -40,12 +40,10 @@ object SmokeBasin {
 
   private def findLowPoints(matrix: Matrix): Seq[Location] = {
     var basins: Seq[Location] = Nil
-    for (y <- matrix.indices) {
-      for (x <- matrix(y).indices) {
-        if (isLessThanAdjacents(matrix, x, y))
-          basins = basins :+ Location(Coordinate(x, y), matrix(y)(x))
-      }
-    }
+    for (y <- matrix.indices; x <- matrix(y).indices)
+      if (isLessThanAdjacents(matrix, x, y))
+        basins = basins :+ Location(Coordinate(x, y), matrix(y)(x))
+
     basins
   }
 
