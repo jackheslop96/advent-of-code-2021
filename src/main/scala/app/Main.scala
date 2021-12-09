@@ -8,6 +8,7 @@ import days.day5.HydrothermalVent
 import days.day6.LanternFish
 import days.day7.Crab
 import days.day8.SevenSegmentSearch
+import days.day9.SmokeBasin
 
 object Main extends App {
 
@@ -34,4 +35,7 @@ object Main extends App {
 
   // Day 8
   SevenSegmentSearch.run()
+
+  // Day 9
+  SmokeBasin.run()
 }
