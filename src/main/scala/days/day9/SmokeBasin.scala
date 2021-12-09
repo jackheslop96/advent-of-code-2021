@@ -40,9 +40,11 @@ object SmokeBasin {
 
   private def findLowPoints(matrix: Matrix): Seq[Location] = {
     var basins: Seq[Location] = Nil
-    for (x <- matrix.head.indices; y <- matrix.indices) {
-      val value = matrix(y)(x)
-      if (isLessThanAdjacents(matrix, value, x, y)) basins = basins :+ Location(Coordinate(x, y), value)
+    for (y <- matrix.indices) {
+      for (x <- matrix(y).indices) {
+        if (isLessThanAdjacents(matrix, x, y))
+          basins = basins :+ Location(Coordinate(x, y), matrix(y)(x))
+      }
     }
     basins
   }
@@ -54,10 +56,10 @@ object SmokeBasin {
     Direction(-1, 0)  // left
   )
 
-  private def isLessThanAdjacents(matrix: Matrix, value: Int, x: Int, y: Int): Boolean = {
+  private def isLessThanAdjacents(matrix: Matrix, x: Int, y: Int): Boolean = {
     def isLessThanAdjacent(d: Direction): Boolean =
       try {
-        value < matrix(y + d.y)(x + d.x)
+        matrix(y)(x) < matrix(y + d.y)(x + d.x)
       } catch {
         case _: ArrayIndexOutOfBoundsException => true
       }
