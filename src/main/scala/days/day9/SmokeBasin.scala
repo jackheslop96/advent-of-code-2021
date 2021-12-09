@@ -67,26 +67,26 @@ object SmokeBasin {
   }
 
   def calculateSizeOfBasin(matrix: Matrix, lowPoint: Coordinate): Int = {
-    def rec(ds: Seq[Direction], coordinate: Coordinate, checkedCoordinates: Seq[Coordinate], acc: Int): (Int, Seq[Coordinate]) = {
+    def rec(ds: Seq[Direction], coordinate: Coordinate, count: Int, checkedCoordinates: Seq[Coordinate]): (Int, Seq[Coordinate]) = {
       ds match {
-        case Nil => (acc, checkedCoordinates :+ coordinate)
+        case Nil => (count, checkedCoordinates :+ coordinate)
         case head :: tail =>
           try {
             val newCoordinate = Coordinate(coordinate.x + head.x, coordinate.y + head.y)
             if (matrix(newCoordinate.y)(newCoordinate.x) < 9 && !checkedCoordinates.contains(newCoordinate)) {
-              val res = rec(directions, newCoordinate, checkedCoordinates :+ coordinate, acc + 1)
-              rec(tail, coordinate, res._2, res._1)
+              val (updatedCount, updatedCheckedCoordinates) = rec(directions, newCoordinate, count + 1, checkedCoordinates :+ coordinate)
+              rec(tail, coordinate, updatedCount, updatedCheckedCoordinates)
             } else {
-              rec(tail, coordinate, checkedCoordinates, acc)
+              rec(tail, coordinate, count, checkedCoordinates)
             }
           } catch {
-            case _: ArrayIndexOutOfBoundsException => rec(tail, coordinate, checkedCoordinates, acc)
+            case _: ArrayIndexOutOfBoundsException => rec(tail, coordinate, count, checkedCoordinates)
           }
       }
     }
 
     // already know that the low point is part of the basin
-    rec(directions, lowPoint, Seq(lowPoint), 1)._1
+    rec(directions, lowPoint, 1, Seq(lowPoint))._1
   }
 
 }
