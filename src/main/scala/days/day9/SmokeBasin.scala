@@ -19,12 +19,14 @@ object SmokeBasin {
 
   def part1(file: String): Int = {
     val matrix = initialiseMatrix(file)
-    findBasins(matrix).map(_.value + 1).sum
+    findLowPoints(matrix)
+      .map(_.value + 1)
+      .sum
   }
 
   def part2(file: String): Int = {
     val matrix = initialiseMatrix(file)
-    findBasins(matrix)
+    findLowPoints(matrix)
       .map(lowPoint => calculateSizeOfBasin(matrix, lowPoint.coordinate))
       .sortWith(_ > _)
       .take(3)
@@ -37,7 +39,7 @@ object SmokeBasin {
       .toArray
   }
 
-  private def findBasins(matrix: Matrix): Seq[Location] = {
+  private def findLowPoints(matrix: Matrix): Seq[Location] = {
     var basins: Seq[Location] = Nil
     for (x <- matrix.head.indices; y <- matrix.indices) {
       val value = matrix(y)(x)
@@ -46,28 +48,25 @@ object SmokeBasin {
     basins
   }
 
+  private val directions = Seq(
+    Direction(0, -1), // up
+    Direction(1, 0),  // right
+    Direction(0, 1),  // down
+    Direction(-1, 0)  // left
+  )
+
   private def isLessThanAdjacents(matrix: Matrix, value: Int, x: Int, y: Int): Boolean = {
-    def isLessThanAdjacent(x: Int, y: Int): Boolean =
+    def isLessThanAdjacent(d: Direction): Boolean =
       try {
-        value < matrix(y)(x)
+        value < matrix(y + d.y)(x + d.x)
       } catch {
         case _: ArrayIndexOutOfBoundsException => true
       }
 
-    isLessThanAdjacent(x, y - 1) &&
-      isLessThanAdjacent(x + 1, y) &&
-      isLessThanAdjacent(x, y + 1) &&
-      isLessThanAdjacent(x - 1, y)
+    directions.forall(isLessThanAdjacent)
   }
 
   def calculateSizeOfBasin(matrix: Matrix, lowPoint: Coordinate): Int = {
-    val directions = Seq(
-      Direction(0, -1), // up
-      Direction(1, 0),  // right
-      Direction(0, 1),  // down
-      Direction(-1, 0)  // left
-    )
-
     def rec(ds: Seq[Direction], coordinate: Coordinate, checkedCoordinates: Seq[Coordinate], acc: Int): (Int, Seq[Coordinate]) = {
       ds match {
         case Nil => (acc, checkedCoordinates :+ coordinate)
