@@ -33,11 +33,10 @@ object SmokeBasin {
       .product
   }
 
-  def initialiseMatrix(file: String): Matrix = {
+  def initialiseMatrix(file: String): Matrix =
     fileReader(file)
       .map(_.map(_.toString.toInt).toArray)
       .toArray
-  }
 
   private def findLowPoints(matrix: Matrix): Seq[Location] = {
     var basins: Seq[Location] = Nil
@@ -67,7 +66,7 @@ object SmokeBasin {
   }
 
   def calculateSizeOfBasin(matrix: Matrix, lowPoint: Coordinate): Int = {
-    def rec(ds: Seq[Direction], coordinate: Coordinate, count: Int, checkedCoordinates: Seq[Coordinate]): (Int, Seq[Coordinate]) = {
+    def rec(ds: Seq[Direction], coordinate: Coordinate, count: Int, checkedCoordinates: Seq[Coordinate]): (Int, Seq[Coordinate]) =
       ds match {
         case Nil => (count, checkedCoordinates :+ coordinate)
         case head :: tail =>
@@ -83,7 +82,6 @@ object SmokeBasin {
             case _: ArrayIndexOutOfBoundsException => rec(tail, coordinate, count, checkedCoordinates)
           }
       }
-    }
 
     // already know that the low point is part of the basin
     rec(directions, lowPoint, 1, Seq(lowPoint))._1
