@@ -21,7 +21,7 @@ object Submarine {
   def apply(): Submarine = new Submarine(0, 0, 0)
 
   def run(): Unit = {
-    val file = "/day-2-input.txt"
+    val file = "/day-02-input.txt"
     println(s"Day 2 part 2 result: ${run(file)}")
     println()
   }

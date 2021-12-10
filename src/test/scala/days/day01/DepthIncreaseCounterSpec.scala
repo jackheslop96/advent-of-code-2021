@@ -42,7 +42,7 @@ class DepthIncreaseCounterSpec extends AnyFreeSpec {
       }
 
       "must return 7 for example input" in {
-        val result = DepthIncreaseCounter.run("/day-1-test-input.txt", windowSize)
+        val result = DepthIncreaseCounter.run("/day-01-test-input.txt", windowSize)
         assert(result == 7)
       }
     }
@@ -52,7 +52,7 @@ class DepthIncreaseCounterSpec extends AnyFreeSpec {
       val windowSize = 3
 
       "must return 5 for example input" in {
-        val result = DepthIncreaseCounter.run("/day-1-test-input.txt", windowSize)
+        val result = DepthIncreaseCounter.run("/day-01-test-input.txt", windowSize)
         assert(result == 5)
       }
     }

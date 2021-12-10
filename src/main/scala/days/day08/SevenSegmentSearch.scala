@@ -7,7 +7,7 @@ import scala.annotation.tailrec
 object SevenSegmentSearch {
 
   def run(): Unit = {
-    val file = "/day-8-input.txt"
+    val file = "/day-08-input.txt"
     println(s"Day 8 part 1 result: ${part1(file)}")
     println(s"Day 8 part 2 result: ${part2(file)}")
     println()

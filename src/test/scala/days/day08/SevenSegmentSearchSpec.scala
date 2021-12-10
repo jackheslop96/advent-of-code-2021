@@ -5,7 +5,7 @@ import org.scalatest.freespec.AnyFreeSpec
 
 class SevenSegmentSearchSpec extends AnyFreeSpec {
 
-  private val file = "/day-8-test-input.txt"
+  private val file = "/day-08-test-input.txt"
 
   "part1" - {
     "when given example input" - {

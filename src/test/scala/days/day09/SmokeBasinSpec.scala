@@ -5,7 +5,7 @@ import org.scalatest.freespec.AnyFreeSpec
 
 class SmokeBasinSpec extends AnyFreeSpec {
 
-  private val file = "/day-9-test-input.txt"
+  private val file = "/day-09-test-input.txt"
 
   private val matrix: Matrix = Array(
     Array(2, 1, 9, 9, 9, 4, 3, 2, 1, 0),

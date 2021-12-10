@@ -56,7 +56,7 @@ class BingoSpec extends AnyFreeSpec {
 
   "playGame" - {
     "when given example input" - {
-      val lines = fileReader("/day-4-test-input.txt")
+      val lines = fileReader("/day-04-test-input.txt")
       val result = playGame(lines)
       "must return score of 4512 for winner" in {
         assert(result.head == 4512)

@@ -117,7 +117,7 @@ class HydrothermalVentSpec extends AnyFreeSpec {
   "generateAllCoordinates" - {
     "must generate all coordinates" - {
 
-      val input = fileReader("/day-5-test-input.txt")
+      val input = fileReader("/day-05-test-input.txt")
 
       "when given a list of coordinate pairs and not including diagonals" in {
         val result = generateAllCoordinates(input, includeDiagonals = false)
@@ -264,7 +264,7 @@ class HydrothermalVentSpec extends AnyFreeSpec {
   "run" - {
     "when given example input" - {
 
-      val file = "/day-5-test-input.txt"
+      val file = "/day-05-test-input.txt"
 
       "when including diagonals" - {
         "must return 5" in {

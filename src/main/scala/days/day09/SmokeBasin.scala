@@ -11,7 +11,7 @@ object SmokeBasin {
   case class Location(coordinate: Coordinate, height: Int)
 
   def run(): Unit = {
-    val file = "/day-9-input.txt"
+    val file = "/day-09-input.txt"
     println(s"Day 9 part 1 result: ${part1(file)}")
     println(s"Day 9 part 2 result: ${part2(file)}")
     println()

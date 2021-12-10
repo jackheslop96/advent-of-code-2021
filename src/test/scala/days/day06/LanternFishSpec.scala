@@ -58,7 +58,7 @@ class LanternFishSpec extends AnyFreeSpec {
 
   "run" - {
 
-    val file = "/day-6-test-input.txt"
+    val file = "/day-06-test-input.txt"
 
     "when 80 days" - {
       "must return 5934" in {

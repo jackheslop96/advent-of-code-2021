@@ -14,7 +14,7 @@ case class Bingo(numbersToDraw: Seq[Int], boards: Seq[BingoBoard]) {
 object Bingo {
 
   def run(): Unit = {
-    val result = run("/day-4-input.txt")
+    val result = run("/day-04-input.txt")
     println(s"Day 4 part 1 result: ${result.head}")
     println(s"Day 4 part 2 result: ${result.last}")
     println()

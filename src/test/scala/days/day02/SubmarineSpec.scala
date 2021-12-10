@@ -60,7 +60,7 @@ class SubmarineSpec extends AnyFreeSpec {
   "run" - {
     "when given example input" - {
       "must return 900" in {
-        val result = Submarine.run("/day-2-test-input.txt")
+        val result = Submarine.run("/day-02-test-input.txt")
         assert(result == 900)
       }
     }

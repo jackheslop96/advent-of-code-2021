@@ -5,7 +5,7 @@ import utils.FileReader.fileReader
 object HydrothermalVent {
 
   def run(): Unit = {
-    val file = "/day-5-input.txt"
+    val file = "/day-05-input.txt"
     println(s"Day 5 part 1 result: ${run(file, includeDiagonals = false)}")
     println(s"Day 5 part 2 result: ${run(file, includeDiagonals = true)}")
     println()

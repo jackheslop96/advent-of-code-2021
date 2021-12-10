@@ -7,7 +7,7 @@ import scala.annotation.tailrec
 object DepthIncreaseCounter {
 
   def run(): Unit = {
-    val file = "/day-1-input.txt"
+    val file = "/day-01-input.txt"
     println(s"Day 1 part 1 result: ${run(file, 1)}")
     println(s"Day 1 part 2 result: ${run(file, 3)}")
     println()

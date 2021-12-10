@@ -7,7 +7,7 @@ import scala.annotation.tailrec
 object Crab {
 
   def run(): Unit = {
-    val file = "/day-7-input.txt"
+    val file = "/day-07-input.txt"
     println(s"Day 7 part 1 result: ${run(file, burnsFuelAtConstantRate = true)}")
     println(s"Day 7 part 2 result: ${run(file, burnsFuelAtConstantRate = false)}")
     println()

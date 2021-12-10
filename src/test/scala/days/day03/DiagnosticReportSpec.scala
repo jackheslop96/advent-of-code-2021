@@ -6,7 +6,7 @@ import utils.FileReader.fileReader
 
 class DiagnosticReportSpec extends AnyFreeSpec {
 
-  private val lines = fileReader("/day-3-test-input.txt")
+  private val lines = fileReader("/day-03-test-input.txt")
 
   "gammaRate" - {
     "must return 10110" - {

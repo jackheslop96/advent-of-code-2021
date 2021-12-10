@@ -8,7 +8,7 @@ import scala.math.pow
 object DiagnosticReport {
 
   def run(): Unit = {
-    val input = fileReader("/day-3-input.txt")
+    val input = fileReader("/day-03-input.txt")
     println(s"Day 3 part 1 result: ${powerConsumption(input)}")
     println(s"Day 3 part 2 result: ${lifeSupportRating(input)}")
     println()

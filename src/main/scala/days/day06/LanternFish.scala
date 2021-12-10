@@ -7,7 +7,7 @@ import scala.annotation.tailrec
 object LanternFish {
 
   def run(): Unit = {
-    val file = "/day-6-input.txt"
+    val file = "/day-06-input.txt"
     println(s"Day 6 part 1 result: ${run(file, 80)}")
     println(s"Day 6 part 2 result: ${run(file, 256)}")
     println()

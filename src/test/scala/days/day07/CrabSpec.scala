@@ -4,7 +4,7 @@ import org.scalatest.freespec.AnyFreeSpec
 
 class CrabSpec extends AnyFreeSpec {
 
-  private val file = "/day-7-test-input.txt"
+  private val file = "/day-07-test-input.txt"
 
   "when burning fuel at constant rate" - {
     "must return 37 for example input" in {
