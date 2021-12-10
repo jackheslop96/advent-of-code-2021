@@ -1,15 +1,15 @@
 package app
 
-import days.day1.DepthIncreaseCounter
+import days.day01.DepthIncreaseCounter
 import days.day10.SyntaxScoring
-import days.day2.Submarine
-import days.day3.DiagnosticReport
-import days.day4.Bingo
-import days.day5.HydrothermalVent
-import days.day6.LanternFish
-import days.day7.Crab
-import days.day8.SevenSegmentSearch
-import days.day9.SmokeBasin
+import days.day02.Submarine
+import days.day03.DiagnosticReport
+import days.day04.Bingo
+import days.day05.HydrothermalVent
+import days.day06.LanternFish
+import days.day07.Crab
+import days.day08.SevenSegmentSearch
+import days.day09.SmokeBasin
 
 object Main extends App {
 
