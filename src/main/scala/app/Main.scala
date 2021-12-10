@@ -1,6 +1,7 @@
 package app
 
 import days.day1.DepthIncreaseCounter
+import days.day10.SyntaxScoring
 import days.day2.Submarine
 import days.day3.DiagnosticReport
 import days.day4.Bingo
@@ -38,4 +39,7 @@ object Main extends App {
 
   // Day 9
   SmokeBasin.run()
+
+  // Day 10
+  SyntaxScoring.run()
 }
