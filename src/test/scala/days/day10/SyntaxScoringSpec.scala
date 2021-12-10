@@ -7,85 +7,71 @@ class SyntaxScoringSpec extends AnyFreeSpec {
 
   private val file = "/day-10-test-input.txt"
 
-  "getCorruptedLines" - {
-    "must return the corrupted lines" - {
-      "when given the example input" in {
-        val result = getCorruptedLines(file)
-        val expectedResult = Seq(
-          "{([(<{}[<>[]}>{[]{[(<()>",
-          "[[<[([]))<([[{}[[()]]]",
-          "[{[{({}]{}}([{[{{{}}([]",
-          "[<(<(<(<{}))><([]([]()",
-          "<{([([[(<>()){}]>(<<{{"
-        )
-        assertResult(expectedResult)(result)
-      }
-    }
-  }
-
-  "isLineValid" - {
-    "should return true" - {
-      "when line is (" in {
-        val result = isLineValid("(")._1
-        assertResult(true)(result)
-      }
+  "getLine" - {
+    "should return Complete" - {
       "when line is ()" in {
-        val result = isLineValid("()")._1
-        assertResult(true)(result)
+        val result = getLine("()")
+        assertResult(Complete)(result.status)
       }
       "when line is {()()()}" in {
-        val result = isLineValid("{()()()}")._1
-        assertResult(true)(result)
+        val result = getLine("{()()()}")
+        assertResult(Complete)(result.status)
       }
       "when line is <([{}])>" in {
-        val result = isLineValid("<([{}])>")._1
-        assertResult(true)(result)
+        val result = getLine("<([{}])>")
+        assertResult(Complete)(result.status)
       }
       "when line is [<>({}){}[([])<>]]" in {
-        val result = isLineValid("[<>({}){}[([])<>]]")._1
-        assertResult(true)(result)
+        val result = getLine("[<>({}){}[([])<>]]")
+        assertResult(Complete)(result.status)
       }
       "when line is (((((((((())))))))))" in {
-        val result = isLineValid("(((((((((())))))))))")._1
-        assertResult(true)(result)
+        val result = getLine("(((((((((())))))))))")
+        assertResult(Complete)(result.status)
       }
     }
-    "should return false" - {
+    "should return Incomplete" - {
+      "when line is (" in {
+        val result = getLine("(")
+        assertResult(Incomplete)(result.status)
+      }
+    }
+    "should return Corrupted" - {
       "when line is (]" in {
-        val result = isLineValid("(]")._1
-        assertResult(false)(result)
+        val result = getLine("(]")
+        assertResult(Corrupted)(result.status)
       }
       "when line is {()()()>" in {
-        val result = isLineValid("{()()()>")._1
-        assertResult(false)(result)
+        val result = getLine("{()()()>")
+        assertResult(Corrupted)(result.status)
       }
       "when line is (((()))}" in {
-        val result = isLineValid("(((()))}")._1
-        assertResult(false)(result)
+        val result = getLine("(((()))}")
+        assertResult(Corrupted)(result.status)
       }
       "when line is <([]){()}[{}])" in {
-        val result = isLineValid("<([]){()}[{}])")._1
-        assertResult(false)(result)
+        val result = getLine("<([]){()}[{}])")
+        assertResult(Corrupted)(result.status)
       }
       "when line is {([(<{}[<>[]}>{[]{[(<()>" in {
-        val result = isLineValid("{([(<{}[<>[]}>{[]{[(<()>")._1
-        assertResult(false)(result)
+        val result = getLine("{([(<{}[<>[]}>{[]{[(<()>")
+        assertResult(Corrupted)(result.status)
       }
       "when line is [[<[([]))<([[{}[[()]]]" in {
-        val result = isLineValid("[[<[([]))<([[{}[[()]]]")._1
-        assertResult(false)(result)
+        val result = getLine("[[<[([]))<([[{}[[()]]]")
+        assertResult(Corrupted)(result.status)
       }
       "when line is [{[{({}]{}}([{[{{{}}([]" in {
-        val result = isLineValid("[{[{({}]{}}([{[{{{}}([]")._1
-        assertResult(false)(result)
+        val result = getLine("[{[{({}]{}}([{[{{{}}([]")
+        assertResult(Corrupted)(result.status)
       }
       "when line is [<(<(<(<{}))><([]([]()" in {
-        val result = isLineValid("[<(<(<(<{}))><([]([]()")._1
-        assertResult(false)(result)
+        val result = getLine("[<(<(<(<{}))><([]([]()")
+        assertResult(Corrupted)(result.status)
       }
       "when line is <{([([[(<>()){}]>(<<{{" in {
-        val result = isLineValid("<{([([[(<>()){}]>(<<{{")._1
-        assertResult(false)(result)
+        val result = getLine("<{([([[(<>()){}]>(<<{{")
+        assertResult(Corrupted)(result.status)
       }
     }
   }
@@ -95,6 +81,15 @@ class SyntaxScoringSpec extends AnyFreeSpec {
       "when given example input" in {
         val result = part1(file)
         assert(result == 26397)
+      }
+    }
+  }
+
+  "part2" - {
+    "should return 288957" - {
+      "when given example input" in {
+        val result = part2(file)
+        assert(result == 288957L)
       }
     }
   }
