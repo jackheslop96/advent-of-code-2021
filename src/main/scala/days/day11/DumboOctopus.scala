@@ -31,6 +31,7 @@ object DumboOctopus {
   def run(): Unit = {
     val file = "/day-11-input.txt"
     println(s"Day 11 part 1 result: ${part1(file, 100)}")
+    println(s"Day 11 part 2 result: ${part2(file)}")
     println()
   }
 
@@ -48,6 +49,22 @@ object DumboOctopus {
     }
 
     rec((0 until steps).toList, matrix)
+  }
+
+  def part2(file: String): Int = {
+
+    @tailrec
+    def rec(matrix: Matrix, numberOfSteps: Int = 1): Int = {
+      val matrixAfterStep = step(matrix)
+      if (matrixAfterStep.matrix.flatten.forall(_.energyLevel == 0)) {
+        numberOfSteps
+      } else {
+        rec(matrixAfterStep.matrix, numberOfSteps + 1)
+      }
+    }
+
+    val matrix = initialiseMatrix(file)
+    rec(matrix)
   }
 
   private def initialiseMatrix(file: String): Matrix =

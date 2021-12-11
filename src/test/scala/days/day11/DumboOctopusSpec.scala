@@ -138,4 +138,13 @@ class DumboOctopusSpec extends AnyFreeSpec {
       }
     }
   }
+
+  "part2" - {
+    "must return 195 steps" - {
+      "when simulating the example input" in {
+        val result = part2(file)
+        assert(result == 195)
+      }
+    }
+  }
 }
