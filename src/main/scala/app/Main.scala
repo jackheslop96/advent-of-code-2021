@@ -10,6 +10,7 @@ import days.day06.LanternFish
 import days.day07.Crab
 import days.day08.SevenSegmentSearch
 import days.day09.SmokeBasin
+import days.day11.DumboOctopus
 
 object Main extends App {
 
@@ -42,4 +43,7 @@ object Main extends App {
 
   // Day 10
   SyntaxScoring.run()
+
+  // Day 11
+  DumboOctopus.run()
 }
