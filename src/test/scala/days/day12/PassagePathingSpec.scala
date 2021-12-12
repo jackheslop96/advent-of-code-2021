@@ -19,7 +19,7 @@ class PassagePathingSpec extends AnyFreeSpec {
           CaveConnection("b-end")
         )
 
-        val result = findPaths(input)
+        val result = findPaths(input, canVisitASmallCaveTwice = false)
         val expectedResult: Paths = Seq(
           Seq("start","A","b","A","c","A","end"),
           Seq("start","A","b","A","end"),
@@ -50,7 +50,7 @@ class PassagePathingSpec extends AnyFreeSpec {
           CaveConnection("kj-dc")
         )
 
-        val result = findPaths(input)
+        val result = findPaths(input, canVisitASmallCaveTwice = false)
         val expectedResult: Paths = Seq(
           Seq("start","HN","dc","HN","end"),
           Seq("start","HN","dc","HN","kj","HN","end"),

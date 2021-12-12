@@ -7,15 +7,20 @@ object PassagePathing {
   type Path = Seq[Cave]
   type Paths = Set[Path]
 
+  final val START = "start"
+  final val END = "end"
+
   case class Cave(name: String) {
     def isSmall: Boolean = name.toLowerCase == name
-    def isStart: Boolean = name == "start"
+    def isStart: Boolean = name == START
+    def isEnd: Boolean = name == END
   }
+
   case class CaveConnection(from: Cave, to: Cave) {
     def contains(cave: Cave): Boolean = this.from == cave || this.to == cave
-
     def otherCave(that: Cave): Cave = if (that == from) to else from
   }
+
   object CaveConnection {
     def apply(line: String): CaveConnection = {
       val names = line.split("-")
@@ -30,83 +35,49 @@ object PassagePathing {
     println()
   }
 
-  def part1(file: String): Int = {
+  def part1(file: String): Int = run(file, canVisitASmallCaveTwice = false)
+
+  def part2(file: String): Int = run(file, canVisitASmallCaveTwice = true)
+
+  def run(file: String, canVisitASmallCaveTwice: Boolean): Int = {
     val input = fileReader(file).map(CaveConnection(_))
-    findPaths(input).size
+    findPaths(input, canVisitASmallCaveTwice).size
   }
 
-  def part2(file: String): Int = {
-    val input = fileReader(file).map(CaveConnection(_))
-    findPaths2(input).size
-  }
-
-  def findPaths(connections: Seq[CaveConnection]): Paths = {
-
-    def rec(currentCave: Cave, visitedCaves: Map[Cave, Int] = Map(), path: Path = Nil): Paths = {
-      val possibleConnections = connections
-        .filter(_.contains(currentCave))
-        .filter { c =>
-          val otherCave = c.otherCave(currentCave)
-          val otherCaveCount = visitedCaves.getOrElse(otherCave, 0)
-          !(otherCave.isSmall && otherCaveCount >= 1)
-        }
-
-      possibleConnections.flatMap { pc =>
-        val nextCave = pc.otherCave(currentCave)
-        val updatedPath = path :+ currentCave
-        if (currentCave == Cave("end")) {
-          updatedPath :: Nil
-        } else {
-          val updatedVisitedCaves = combineMaps(visitedCaves, Map(currentCave -> 1))
-          rec(nextCave, updatedVisitedCaves, updatedPath)
-        }
-      }.toSet
-    }
-
-    rec(Cave("start"))
-  }
-
-  def findPaths2(connections: Seq[CaveConnection]): Paths = {
+  def findPaths(connections: Seq[CaveConnection], canVisitASmallCaveTwice: Boolean): Paths = {
 
     def rec(currentCave: Cave, visitedCaves: Map[Cave, Int] = Map(), visitedASmallCaveTwice: Boolean = false, path: Path = Nil): Paths = {
       val possibleConnections = connections
         .filter(_.contains(currentCave))
-        .filter { c =>
+        .filterNot { c =>
           val otherCave = c.otherCave(currentCave)
           val otherCaveCount = visitedCaves.getOrElse(otherCave, 0)
-          if (visitedASmallCaveTwice) {
-            !(otherCave.isSmall && otherCaveCount >= 1)
-          } else {
-            !(otherCave.isSmall && otherCaveCount >= 2)
-          }
+          val otherCaveAllowedCount = if (canVisitASmallCaveTwice && !visitedASmallCaveTwice) 2 else 1
+          otherCave.isSmall && otherCaveCount >= otherCaveAllowedCount
         }
 
       possibleConnections.flatMap { pc =>
         val nextCave = pc.otherCave(currentCave)
         val updatedPath = path :+ currentCave
-        if (currentCave == Cave("end")) {
+        if (currentCave.isEnd) {
           updatedPath :: Nil
+        } else if (nextCave.isStart) {
+          Nil
         } else {
-          if (nextCave.isStart) {
-            Nil
-          } else {
-            val updatedVisitedCaves = combineMaps(visitedCaves, Map(currentCave -> 1))
-            val visitedNextCaveBefore = visitedCaves.getOrElse(nextCave, 0) > 0
-            if (nextCave.isSmall && visitedNextCaveBefore) {
-              rec(nextCave, updatedVisitedCaves, visitedASmallCaveTwice = true, updatedPath)
-            } else {
-              rec(nextCave, updatedVisitedCaves, visitedASmallCaveTwice, updatedPath)
-            }
-          }
+          rec(
+            currentCave = nextCave,
+            visitedCaves = combineMaps(visitedCaves, Map(currentCave -> 1)),
+            visitedASmallCaveTwice = if (nextCave.isSmall && visitedCaves.contains(nextCave)) true else visitedASmallCaveTwice,
+            path = updatedPath
+          )
         }
       }.toSet
     }
 
-    rec(Cave("start"))
+    rec(Cave(START))
   }
 
-  private def combineMaps(a: Map[Cave, Int], b: Map[Cave, Int]): Map[Cave, Int] = {
+  private def combineMaps(a: Map[Cave, Int], b: Map[Cave, Int]): Map[Cave, Int] =
     a ++ b.map { case (k, v) => k -> (v + a.getOrElse(k, 0)) }
-  }
 
 }
