@@ -93,9 +93,8 @@ class PassagePathingSpec extends AnyFreeSpec {
         assert(result == 19)
       }
     }
-    // this might be an error on their part - I get 82
     "must return 226" - {
-      "when given large example" ignore {
+      "when given large example" in {
         val file = "/day12/day-12-test-large-input.txt"
         val result = part1(file)
         assert(result == 226)
@@ -118,9 +117,8 @@ class PassagePathingSpec extends AnyFreeSpec {
         assert(result == 103)
       }
     }
-    // this might be an error on their part - I get 1021
     "must return 3509" - {
-      "when given large example" ignore {
+      "when given large example" in {
         val file = "/day12/day-12-test-large-input.txt"
         val result = part2(file)
         assert(result == 3509)

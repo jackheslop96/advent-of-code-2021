@@ -11,14 +11,14 @@ object PassagePathing {
   final val END = "end"
 
   case class Cave(name: String) {
-    def isSmall: Boolean = name.toLowerCase == name
+    def isSmall: Boolean = name.matches("[a-z]+")
     def isStart: Boolean = name == START
     def isEnd: Boolean = name == END
   }
 
   case class CaveConnection(from: Cave, to: Cave) {
     def contains(cave: Cave): Boolean = this.from == cave || this.to == cave
-    def otherCave(that: Cave): Cave = if (that == from) to else from
+    def otherCave(that: Cave): Cave = if (that == from) to else if (that == to) from else throw new Exception
   }
 
   object CaveConnection {
@@ -47,31 +47,30 @@ object PassagePathing {
   def findPaths(connections: Seq[CaveConnection], canVisitASmallCaveTwice: Boolean): Paths = {
 
     def rec(currentCave: Cave, visitedCaves: Map[Cave, Int] = Map(), visitedASmallCaveTwice: Boolean = false, path: Path = Nil): Paths = {
-      val possibleConnections = connections
-        .filter(_.contains(currentCave))
-        .filterNot { c =>
-          val otherCave = c.otherCave(currentCave)
-          val otherCaveCount = visitedCaves.getOrElse(otherCave, 0)
-          val otherCaveAllowedCount = if (canVisitASmallCaveTwice && !visitedASmallCaveTwice) 2 else 1
-          otherCave.isSmall && otherCaveCount >= otherCaveAllowedCount
-        }
+      val updatedPath = path :+ currentCave
+      if (currentCave.isEnd) {
+        Set(updatedPath)
+      } else {
+        val possibleConnections = connections
+          .filter(_.contains(currentCave))
+          .filterNot(_.otherCave(currentCave).isStart)
+          .filterNot { c =>
+            val otherCave = c.otherCave(currentCave)
+            val otherCaveCount = visitedCaves.getOrElse(otherCave, 0)
+            val otherCaveAllowedCount = if (canVisitASmallCaveTwice && !visitedASmallCaveTwice) 2 else 1
+            otherCave.isSmall && otherCaveCount >= otherCaveAllowedCount
+          }
 
-      possibleConnections.flatMap { pc =>
-        val nextCave = pc.otherCave(currentCave)
-        val updatedPath = path :+ currentCave
-        if (currentCave.isEnd) {
-          updatedPath :: Nil
-        } else if (nextCave.isStart) {
-          Nil
-        } else {
+        possibleConnections.flatMap { pc =>
+          val nextCave = pc.otherCave(currentCave)
           rec(
             currentCave = nextCave,
             visitedCaves = combineMaps(visitedCaves, Map(currentCave -> 1)),
             visitedASmallCaveTwice = if (nextCave.isSmall && visitedCaves.contains(nextCave)) true else visitedASmallCaveTwice,
             path = updatedPath
           )
-        }
-      }.toSet
+        }.toSet
+      }
     }
 
     rec(Cave(START))
