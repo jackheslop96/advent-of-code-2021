@@ -12,6 +12,7 @@ import days.day08.SevenSegmentSearch
 import days.day09.SmokeBasin
 import days.day11.DumboOctopus
 import days.day12.PassagePathing
+import days.day13.TransparentOrigami
 
 object Main extends App {
 
@@ -50,4 +51,7 @@ object Main extends App {
 
   // Day 12
   PassagePathing.run()
+
+  // Day 13
+  TransparentOrigami.run()
 }
