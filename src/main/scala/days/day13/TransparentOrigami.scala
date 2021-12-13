@@ -26,7 +26,8 @@ object TransparentOrigami {
   def run(): Unit = {
     val file = "/day-13-input.txt"
     println(s"Day 13 part 1 result: ${part1(file, 1)}")
-    println(s"Day 13 part 2 result: ${part2(file)}")
+    println("Day 13 part 2 result:")
+    part2(file)
     println()
   }
 
@@ -37,11 +38,7 @@ object TransparentOrigami {
 
   def part2(file: String): Unit = {
     val result = run(file)(identity)
-    val resultForPrint = result.map(_.map {
-      case '.' => ' '
-      case c => c
-    })
-    resultForPrint.foreach(x => println(x.mkString))
+    result.foreach(x => println(x.mkString))
   }
 
   private def run(file: String)(f: Seq[String] => Seq[String]): Paper = {
@@ -75,13 +72,11 @@ object TransparentOrigami {
 
     def foldLine(cs: Seq[Char]): Seq[Char] = {
 
-      def valueAtIndex(index: Int): Option[Char] = {
-        try {
-          Some(cs(index))
-        } catch {
+      def valueAtIndex(index: Int): Option[Char] =
+        try Some(cs(index))
+        catch {
           case _: IndexOutOfBoundsException => None
         }
-      }
 
       @tailrec
       def rec(acc: Seq[Char] = Nil, counter: Int = 1): Seq[Char] = {

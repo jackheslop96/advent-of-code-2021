@@ -69,26 +69,25 @@ class TransparentOrigamiSpec extends AnyFreeSpec {
     "must fold paper and combine dots/empties" - {
 
       val paper = Seq(
-        Seq('.','#', '.'),
         Seq('.','.', '#'),
+        Seq('.','.', '.'),
         Seq('#','.', '.')
       )
 
       "when folding up" in {
-        val result = foldPaper(paper, Fold(Up, 2))
+        val result = foldPaper(paper, Fold(Up, 1))
         val expectedResult = Seq(
-          Seq('.','#', '.'),
           Seq('#','.', '#')
         )
         assertResult(expectedResult)(result)
       }
 
       "when folding left" in {
-        val result = foldPaper(paper, Fold(Left, 2))
+        val result = foldPaper(paper, Fold(Left, 1))
         val expectedResult = Seq(
-          Seq('.', "#"),
-          Seq('.', '#'),
-          Seq('#', '.')
+          Seq('#'),
+          Seq('.'),
+          Seq('#')
         )
         assertResult(expectedResult)(result)
       }
