@@ -6,7 +6,7 @@ import scala.annotation.tailrec
 
 object TransparentOrigami {
 
-  type Paper = Seq[Seq[Char]]
+  type Paper = Array[Array[Char]]
 
   case class Coordinate(x: Int, y: Int)
 
@@ -27,7 +27,7 @@ object TransparentOrigami {
     val file = "/day-13-input.txt"
     println(s"Day 13 part 1 result: ${part1(file, 1)}")
     println("Day 13 part 2 result:")
-    part2(file)
+    part2(file).foreach(x => println(x.mkString))
     println()
   }
 
@@ -36,10 +36,8 @@ object TransparentOrigami {
     result.flatten.count(_ == '#')
   }
 
-  def part2(file: String): Unit = {
-    val result = run(file)(identity)
-    result.foreach(x => println(x.mkString))
-  }
+  def part2(file: String): Paper =
+    run(file)(identity)
 
   private def run(file: String)(f: Seq[String] => Seq[String]): Paper = {
     val input = fileReader(file)
@@ -54,23 +52,16 @@ object TransparentOrigami {
   def initialisePaper(dots: Seq[Coordinate]): Paper = {
     val width = dots.map(_.x).max
     val length = dots.map(_.y).max
-    var paper: Paper = Nil
-    for (y <- 0 to length) {
-      var line: Seq[Char] = Nil
-      for (x <- 0 to width) {
-        line = line :+ (dots.find(d => d.x == x && d.y == y) match {
-          case Some(_) => '#'
-          case None => '.'
-        })
-      }
-      paper = paper :+ line
+    val matrix = Array.fill(length + 1, width + 1)('.')
+    dots.foreach { d =>
+      matrix(d.y)(d.x) = '#'
     }
-    paper
+    matrix
   }
 
   def foldPaper(paper: Paper, fold: Fold): Paper = {
 
-    def foldLine(cs: Seq[Char]): Seq[Char] = {
+    def foldLine(cs: Array[Char]): Array[Char] = {
 
       def valueAtIndex(index: Int): Option[Char] =
         try Some(cs(index))
@@ -79,7 +70,7 @@ object TransparentOrigami {
         }
 
       @tailrec
-      def rec(acc: Seq[Char] = Nil, counter: Int = 1): Seq[Char] = {
+      def rec(acc: Array[Char] = Array.empty, counter: Int = 1): Array[Char] = {
         val c1 = valueAtIndex(fold.line - counter)
         val c2 = valueAtIndex(fold.line + counter)
         (c1, c2) match {

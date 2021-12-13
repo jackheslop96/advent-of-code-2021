@@ -42,22 +42,22 @@ class TransparentOrigamiSpec extends AnyFreeSpec {
 
         val result = initialisePaper(dots)
 
-        val expectedResult = Seq(
-          Seq('.','.','.','#','.','.','#','.','.','#','.'),
-          Seq('.','.','.','.','#','.','.','.','.','.','.'),
-          Seq('.','.','.','.','.','.','.','.','.','.','.'),
-          Seq('#','.','.','.','.','.','.','.','.','.','.'),
-          Seq('.','.','.','#','.','.','.','.','#','.','#'),
-          Seq('.','.','.','.','.','.','.','.','.','.','.'),
-          Seq('.','.','.','.','.','.','.','.','.','.','.'),
-          Seq('.','.','.','.','.','.','.','.','.','.','.'),
-          Seq('.','.','.','.','.','.','.','.','.','.','.'),
-          Seq('.','.','.','.','.','.','.','.','.','.','.'),
-          Seq('.','#','.','.','.','.','#','.','#','#','.'),
-          Seq('.','.','.','.','#','.','.','.','.','.','.'),
-          Seq('.','.','.','.','.','.','#','.','.','.','#'),
-          Seq('#','.','.','.','.','.','.','.','.','.','.'),
-          Seq('#','.','#','.','.','.','.','.','.','.','.')
+        val expectedResult = Array(
+          Array('.','.','.','#','.','.','#','.','.','#','.'),
+          Array('.','.','.','.','#','.','.','.','.','.','.'),
+          Array('.','.','.','.','.','.','.','.','.','.','.'),
+          Array('#','.','.','.','.','.','.','.','.','.','.'),
+          Array('.','.','.','#','.','.','.','.','#','.','#'),
+          Array('.','.','.','.','.','.','.','.','.','.','.'),
+          Array('.','.','.','.','.','.','.','.','.','.','.'),
+          Array('.','.','.','.','.','.','.','.','.','.','.'),
+          Array('.','.','.','.','.','.','.','.','.','.','.'),
+          Array('.','.','.','.','.','.','.','.','.','.','.'),
+          Array('.','#','.','.','.','.','#','.','#','#','.'),
+          Array('.','.','.','.','#','.','.','.','.','.','.'),
+          Array('.','.','.','.','.','.','#','.','.','.','#'),
+          Array('#','.','.','.','.','.','.','.','.','.','.'),
+          Array('#','.','#','.','.','.','.','.','.','.','.')
         )
 
         assertResult(expectedResult)(result)
@@ -68,26 +68,26 @@ class TransparentOrigamiSpec extends AnyFreeSpec {
   "foldPaper" - {
     "must fold paper and combine dots/empties" - {
 
-      val paper = Seq(
-        Seq('.','.', '#'),
-        Seq('.','.', '.'),
-        Seq('#','.', '.')
+      val paper = Array(
+        Array('.','.', '#'),
+        Array('.','.', '.'),
+        Array('#','.', '.')
       )
 
       "when folding up" in {
         val result = foldPaper(paper, Fold(Up, 1))
-        val expectedResult = Seq(
-          Seq('#','.', '#')
+        val expectedResult = Array(
+          Array('#','.', '#')
         )
         assertResult(expectedResult)(result)
       }
 
       "when folding left" in {
         val result = foldPaper(paper, Fold(Left, 1))
-        val expectedResult = Seq(
-          Seq('#'),
-          Seq('.'),
-          Seq('#')
+        val expectedResult = Array(
+          Array('#'),
+          Array('.'),
+          Array('#')
         )
         assertResult(expectedResult)(result)
       }
@@ -114,7 +114,17 @@ class TransparentOrigamiSpec extends AnyFreeSpec {
   }
 
   "part2" in {
-    part2(file)
+    val result = part2(file)
+    val expectedResult = Array(
+      Array('#','#','#','#','#'),
+      Array('#','.','.','.','#'),
+      Array('#','.','.','.','#'),
+      Array('#','.','.','.','#'),
+      Array('#','#','#','#','#'),
+      Array('.','.','.','.','.'),
+      Array('.','.','.','.','.')
+    )
+    assertResult(expectedResult)(result)
   }
 
 }
