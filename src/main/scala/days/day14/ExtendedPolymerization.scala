@@ -79,6 +79,6 @@ object ExtendedPolymerization {
   }
 
   def combineMaps[A](a: Map[A, BigDecimal], b: Map[A, BigDecimal]): Map[A, BigDecimal] =
-    a ++ b.map { case (k, v) => k -> (v + a.getOrElse(k, 0L)) }
+    a ++ b.map { case (k, v) => k -> (v + a.getOrElse(k, 0)) }
 
 }
