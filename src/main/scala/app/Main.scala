@@ -13,6 +13,7 @@ import days.day09.SmokeBasin
 import days.day11.DumboOctopus
 import days.day12.PassagePathing
 import days.day13.TransparentOrigami
+import days.day14.ExtendedPolymerization
 
 object Main extends App {
 
@@ -54,4 +55,7 @@ object Main extends App {
 
   // Day 13
   TransparentOrigami.run()
+
+  // Day 14
+  ExtendedPolymerization.run()
 }
