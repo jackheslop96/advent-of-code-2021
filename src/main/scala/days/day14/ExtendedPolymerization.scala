@@ -21,51 +21,50 @@ object ExtendedPolymerization {
       val pattern(s1, s2) = insertion
       acc + (s1 -> s2.head)
     })
-    val result = steps(template, insertions, numberOfSteps)
-    val characterCounts = individualCharacterCount(result, template)
-    val max = characterCounts.maxBy(_._2)
-    val min = characterCounts.minBy(_._2)
-    max._2 - min._2
+    val charPairs = steps(template, insertions, numberOfSteps)
+    val charCounts = individualCharacterCounts(charPairs, template)
+    charCounts.maxBy(_._2)._2 - charCounts.minBy(_._2)._2
   }
 
-  def individualCharacterCount(map: Map[String, BigDecimal], template: String): Map[Char, BigDecimal] = {
-    var acc: Map[Char, BigDecimal] = Map()
-    map.foreach {
-      case (str, l) =>
-        val count = l / 2
-        acc = str.toList match {
-        case cs => combineMaps(acc, combineMaps(Map(cs.head -> count), Map(cs.last -> count)))
+  def individualCharacterCounts(map: Map[String, BigDecimal], template: String): Map[Char, BigDecimal] = {
+    map
+      .foldLeft[Map[Char, BigDecimal]](Map())((acc, kv) => {
+        kv match {
+          case (str, bd) =>
+            // since characters are shared between pairs we need to half the counts
+            combineMaps(acc, combineMaps(Map(str.head -> bd/2), Map(str.last -> bd/2)))
+        }
+      })
+      .map {
+        case (k, v) =>
+          // since the above would only denote a count of 0.5
+          // to the first character in the first pair and last character in the last pair
+          // we need to add an additional 0.5 for these characters
+          if (k == template.head || k == template.last) (k, v + 0.5) else (k, v)
       }
-    }
-    acc = combineMaps(acc, Map(template.head -> 0.5))
-    acc = combineMaps(acc, Map(template.last -> 0.5))
-    acc
   }
 
-  private def steps(template: String, insertions: Map[String, Char], numberOfSteps: Int): Map[String, BigDecimal] = {
-    val initialCharPairs = groupStringIntoCharPairs(template)
-    (1 to numberOfSteps).foldLeft[Map[String, BigDecimal]](initialCharPairs)((acc, _) => {
+  private def steps(template: String, insertions: Map[String, Char], numberOfSteps: Int): Map[String, BigDecimal] =
+    (1 to numberOfSteps).foldLeft[Map[String, BigDecimal]](groupStringIntoCharPairs(template))((acc, _) => {
       step(acc, insertions)
     })
-  }
 
-  private def step(charPairs: Map[String, BigDecimal], insertions: Map[String, Char]): Map[String, BigDecimal] = {
-
-    var acc: Map[String, BigDecimal] = charPairs
-
-    charPairs.foreach {
-      case (str, l) if l > 0 => insertions.get(str) match {
-        case Some(value) => acc = combineMaps(
-          combineMaps(acc, Map(str -> -l)),
-          groupStringIntoCharPairs(s"${str.head}$value${str.last}", l)
-        )
-        case None => ()
+  private def step(charPairs: Map[String, BigDecimal], insertions: Map[String, Char]): Map[String, BigDecimal] =
+    charPairs.foldLeft[Map[String, BigDecimal]](charPairs)((acc, cp) => {
+      cp match {
+        case (str, bd) => insertions.get(str) match {
+          case Some(char) =>
+            // if we have NN -> C for example
+            // we need to remove all of the NN char pairs
+            // and add all of the newly created NC and CN char pairs
+            combineMaps(
+              combineMaps(acc, Map(str -> -bd)),
+              groupStringIntoCharPairs(s"${str.head}$char${str.last}", bd)
+            )
+          case None => acc
+        }
       }
-      case _ => ()
-    }
-
-    acc
-  }
+    })
 
   private def groupStringIntoCharPairs(string: String, instances: BigDecimal = 1): Map[String, BigDecimal] = {
 

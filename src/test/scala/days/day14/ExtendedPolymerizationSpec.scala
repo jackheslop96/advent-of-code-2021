@@ -22,37 +22,33 @@ class ExtendedPolymerizationSpec extends AnyFreeSpec {
     }
   }
 
-  "individualCharacterCount" - {
+  "individualCharacterCounts" - {
     "must return count of each character" - {
 
-      "when one character the same" in {
-        // ABCD
+      "when ABCD" in {
         val input: Map[String, BigDecimal] = Map("AB" -> 1, "BC" -> 1, "CD" -> 1)
-        val result = individualCharacterCount(input, "ABCD")
+        val result = individualCharacterCounts(input, "ABCD")
         val expectedResult: Map[Char, BigDecimal] = Map('A' -> 1, 'B' -> 1, 'C' -> 1, 'D' -> 1)
         assertResult(expectedResult)(result)
       }
 
-      "when one character duplicated" in {
-        // ABBC
+      "when ABBC" in {
         val input: Map[String, BigDecimal] = Map("AB" -> 1, "BB" -> 1, "BC" -> 1)
-        val result = individualCharacterCount(input, "ABBC")
+        val result = individualCharacterCounts(input, "ABBC")
         val expectedResult: Map[Char, BigDecimal] = Map('A' -> 1, 'B' -> 2, 'C' -> 1)
         assertResult(expectedResult)(result)
       }
 
-      "when start character duplicated" in {
-        // BABBC
+      "when BABBC" in {
         val input: Map[String, BigDecimal] = Map("BA" -> 1, "AB" -> 1, "BB" -> 1, "BC" -> 1)
-        val result = individualCharacterCount(input, "BABBC")
+        val result = individualCharacterCounts(input, "BABBC")
         val expectedResult: Map[Char, BigDecimal] = Map('A' -> 1, 'B' -> 3, 'C' -> 1)
         assertResult(expectedResult)(result)
       }
 
-      "when end character duplicated" in {
-        // ABBCB
+      "when ABBCB" in {
         val input: Map[String, BigDecimal] = Map("AB" -> 1, "BB" -> 1, "BC" -> 1, "CB" -> 1)
-        val result = individualCharacterCount(input, "ABBCB")
+        val result = individualCharacterCounts(input, "ABBCB")
         val expectedResult: Map[Char, BigDecimal] = Map('A' -> 1, 'B' -> 3, 'C' -> 1)
         assertResult(expectedResult)(result)
       }
