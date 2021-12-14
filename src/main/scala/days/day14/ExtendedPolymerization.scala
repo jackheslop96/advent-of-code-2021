@@ -26,10 +26,10 @@ object ExtendedPolymerization {
     charCounts.maxBy(_._2)._2 - charCounts.minBy(_._2)._2
   }
 
-  def individualCharacterCounts(map: Map[String, BigDecimal], template: String): Map[Char, BigDecimal] = {
-    map
-      .foldLeft[Map[Char, BigDecimal]](Map())((acc, kv) => {
-        kv match {
+  def individualCharacterCounts(charPairs: Map[String, BigDecimal], template: String): Map[Char, BigDecimal] = {
+    charPairs
+      .foldLeft[Map[Char, BigDecimal]](Map())((acc, cp) => {
+        cp match {
           case (str, bd) =>
             // since characters are shared between pairs we need to half the counts
             combineMaps(acc, combineMaps(Map(str.head -> bd/2), Map(str.last -> bd/2)))
