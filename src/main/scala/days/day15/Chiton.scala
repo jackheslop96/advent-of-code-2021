@@ -2,16 +2,13 @@ package days.day15
 
 import utils.FileReader.fileReader
 
-import scala.annotation.tailrec
+import scala.collection.mutable
 
 object Chiton {
 
-  case class Node(x: Int, y: Int, value: Int) {
-    def isRoot: Boolean = x == 0 && y == 0
-    val risk: Int = if (isRoot) 0 else value
-  }
+  case class Node(x: Int, y: Int)
 
-  type Matrix = Array[Array[Node]]
+  type Grid = Map[Node, Int]
 
   def run(): Unit = {
     val file = "/day-15-input.txt"
@@ -20,65 +17,43 @@ object Chiton {
   }
 
   def part1(file: String): Int = {
-    val matrix = initialiseMatrix(file)
-    val result = findPaths(matrix)
-
-    result(matrix.length - 1)(matrix.head.length - 1).risk
+    val grid = initialiseGrid(file)
+    findLowestRiskPath(grid)
   }
 
-  private def findPaths(matrix: Matrix): Matrix = {
+  // uses Dijkstra's algorithm
+  def findLowestRiskPath(grid: Grid): Int = {
+    val startNode = Node(0, 0)
+    val endNode = grid.keys.maxBy(p => p.x + p.y)
+    val risks = mutable.Map(startNode -> 0)
+    val queue = mutable.Queue(startNode)
 
-    @tailrec
-    def rec(queue: Seq[Node], risks: Matrix, visitedNodes: Seq[Node] = Nil): Matrix = {
-      queue match {
-        case Nil => risks
-        case _ =>
-
-          def adjacentNodes(node: Node): Seq[Node] = {
-            var adjacentNodes: Seq[Node] = Nil
-            for (dx <- -1 to 1; dy <- -1 to 1) {
-              if (dx == 0 ^ dy == 0) {
-                try adjacentNodes = adjacentNodes :+ matrix(node.y + dy)(node.x + dx)
-                catch {
-                  case _: ArrayIndexOutOfBoundsException => ()
-                }
-              }
-            }
-            adjacentNodes
-          }
-
-          val node = risks
-            .flatten
-            .filterNot(visitedNodes.contains(_))
-            .minBy(_.risk)
-
-          adjacentNodes(node).foreach { adjNode =>
-            risks(adjNode.y)(adjNode.x) = Node(
-              adjNode.x,
-              adjNode.y,
-              Math.min(
-                risks(node.y)(node.x).risk + adjNode.risk,
-                risks(adjNode.y)(adjNode.x).risk
-              )
-            )
-          }
-
-          rec(
-            queue = queue.filterNot(n => n.x == node.x && n.y == node.y),
-            risks = risks,
-            visitedNodes = visitedNodes :+ node
-          )
-      }
+    def adjacentNodes(node: Node): Seq[Node] = {
+      val directions = Seq((1, 0), (-1, 0), (0, -1), (0, 1))
+      directions
+        .map {
+          case (dx, dy) => Node(node.x + dx, node.y + dy)
+        }
+        .filter(grid.contains)
     }
 
-    val risks = matrix.map(_.map(n => n.copy(value = if (n.isRoot) 0 else Int.MaxValue)))
-    rec(matrix.flatten.toSeq, risks)
+    do {
+      val node = queue.dequeue()
+      adjacentNodes(node).foreach { adjacentNode =>
+        if (!risks.contains(adjacentNode) || (risks(node) + grid(adjacentNode) < risks(adjacentNode))) {
+          risks(adjacentNode) = risks(node) + grid(adjacentNode)
+          queue.enqueue(adjacentNode)
+        }
+      }
+    }
+    while (queue.nonEmpty)
+
+    risks(endNode)
   }
 
-  private def initialiseMatrix(file: String): Matrix =
-    fileReader(file)
-      .zipWithIndex
-      .map(y => y._1.zipWithIndex.map(x => Node(x._2, y._2, x._1.toString.toInt)).toArray)
-      .toArray
+  private def initialiseGrid(file: String): Grid = {
+    val input = fileReader(file)
+    Seq.tabulate(input.head.length, input.length)((x, y) => Node(x, y) -> input(y)(x).toString.toInt).flatten.toMap
+  }
 
 }
