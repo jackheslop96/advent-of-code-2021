@@ -70,7 +70,7 @@ object Chiton {
     Seq.tabulate(5, 5) { (x, y) =>
       grid.map { case (node, risk) =>
         val newRisk = risk + x + y match {
-          case r if r > 9 => r - 9
+          case r if r > 9 => r % 9
           case r => r
         }
         Node((gridWidth * x) + node.x, (gridLength * y) + node.y) -> newRisk
