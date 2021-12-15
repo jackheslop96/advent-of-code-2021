@@ -2,9 +2,16 @@ package days.day15
 
 import utils.FileReader.fileReader
 
+import scala.annotation.tailrec
+
 object Chiton {
 
-  type Matrix = Array[Array[Int]]
+  case class Node(x: Int, y: Int, value: Int) {
+    def isRoot: Boolean = x == 0 && y == 0
+    val risk: Int = if (isRoot) 0 else value
+  }
+
+  type Matrix = Array[Array[Node]]
 
   def run(): Unit = {
     val file = "/day-15-input.txt"
@@ -14,34 +21,64 @@ object Chiton {
 
   def part1(file: String): Int = {
     val matrix = initialiseMatrix(file)
-    findPaths(matrix).min
+    val result = findPaths(matrix)
+
+    result(matrix.length - 1)(matrix.head.length - 1).risk
   }
 
-  private def findPaths(matrix: Matrix): Seq[Int] = {
+  private def findPaths(matrix: Matrix): Matrix = {
 
-    val maxY = matrix.length - 1
-
-    def rec(x: Int = 0, y: Int = 0, path: Int = -matrix(0)(0)): Seq[Int] = {
-      val maxX = matrix(y).length - 1
-      val updatedPath = path + matrix(y)(x)
-      (x, y) match {
-        case _ if x < maxX && y < maxY =>
-          rec(x + 1, y, updatedPath) ++ rec(x, y + 1, updatedPath)
-        case _ if x < maxX =>
-          rec(x + 1, y, updatedPath)
-        case _ if y < maxY =>
-          rec(x, y + 1, updatedPath)
+    @tailrec
+    def rec(queue: Seq[Node], risks: Matrix, visitedNodes: Seq[Node] = Nil): Matrix = {
+      queue match {
+        case Nil => risks
         case _ =>
-          Seq(updatedPath)
+
+          def adjacentNodes(node: Node): Seq[Node] = {
+            var adjacentNodes: Seq[Node] = Nil
+            for (dx <- -1 to 1; dy <- -1 to 1) {
+              if (dx == 0 ^ dy == 0) {
+                try adjacentNodes = adjacentNodes :+ matrix(node.y + dy)(node.x + dx)
+                catch {
+                  case _: ArrayIndexOutOfBoundsException => ()
+                }
+              }
+            }
+            adjacentNodes
+          }
+
+          val node = risks
+            .flatten
+            .filterNot(visitedNodes.contains(_))
+            .minBy(_.risk)
+
+          adjacentNodes(node).foreach { adjNode =>
+            risks(adjNode.y)(adjNode.x) = Node(
+              adjNode.x,
+              adjNode.y,
+              Math.min(
+                risks(node.y)(node.x).risk + adjNode.risk,
+                risks(adjNode.y)(adjNode.x).risk
+              )
+            )
+          }
+
+          rec(
+            queue = queue.filterNot(n => n.x == node.x && n.y == node.y),
+            risks = risks,
+            visitedNodes = visitedNodes :+ node
+          )
       }
     }
 
-    rec()
+    val risks = matrix.map(_.map(n => n.copy(value = if (n.isRoot) 0 else Int.MaxValue)))
+    rec(matrix.flatten.toSeq, risks)
   }
 
   private def initialiseMatrix(file: String): Matrix =
     fileReader(file)
-      .map(_.map(_.toString.toInt).toArray)
+      .zipWithIndex
+      .map(y => y._1.zipWithIndex.map(x => Node(x._2, y._2, x._1.toString.toInt)).toArray)
       .toArray
 
 }
