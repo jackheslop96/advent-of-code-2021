@@ -26,7 +26,7 @@ object Chiton {
       val updatedPath = path + matrix(y)(x)
       (x, y) match {
         case _ if x < maxX && y < maxY =>
-          rec(x + 1, y, path + matrix(y)(x)) ++ rec(x, y + 1, updatedPath)
+          rec(x + 1, y, updatedPath) ++ rec(x, y + 1, updatedPath)
         case _ if x < maxX =>
           rec(x + 1, y, updatedPath)
         case _ if y < maxY =>
