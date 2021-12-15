@@ -13,6 +13,7 @@ object Chiton {
   def run(): Unit = {
     val file = "/day-15-input.txt"
     println(s"Day 15 part 1 result: ${part1(file)}")
+    println(s"Day 15 part 2 result: ${part2(file)}")
     println()
   }
 
@@ -21,10 +22,14 @@ object Chiton {
     findLowestRiskPath(grid)
   }
 
+  def part2(file: String): Int = {
+    val grid = initialiseGrid(file)
+    findLowestRiskPath(expandGrid(grid))
+  }
+
   // uses Dijkstra's algorithm
   def findLowestRiskPath(grid: Grid): Int = {
     val startNode = Node(0, 0)
-    val endNode = grid.keys.maxBy(p => p.x + p.y)
     val risks = mutable.Map(startNode -> 0)
     val queue = mutable.Queue(startNode)
 
@@ -48,12 +53,31 @@ object Chiton {
     }
     while (queue.nonEmpty)
 
-    risks(endNode)
+    risks(findEndNode(grid))
   }
 
   private def initialiseGrid(file: String): Grid = {
     val input = fileReader(file)
-    Seq.tabulate(input.head.length, input.length)((x, y) => Node(x, y) -> input(y)(x).toString.toInt).flatten.toMap
+    Seq.tabulate(input.head.length, input.length) { (x, y) =>
+      Node(x, y) -> input(y)(x).toString.toInt
+    }.flatten.toMap
   }
+
+  private def expandGrid(grid: Grid): Grid = {
+    val endNode = findEndNode(grid)
+    val gridWidth = endNode.x + 1
+    val gridLength = endNode.y + 1
+    Seq.tabulate(5, 5) { (x, y) =>
+      grid.map { case (node, risk) =>
+        val newRisk = risk + x + y match {
+          case r if r > 9 => r - 9
+          case r => r
+        }
+        Node((gridWidth * x) + node.x, (gridLength * y) + node.y) -> newRisk
+      }
+    }.flatten.flatten.toMap
+  }
+
+  private def findEndNode(grid: Grid): Node = grid.keys.maxBy(p => p.x + p.y)
 
 }

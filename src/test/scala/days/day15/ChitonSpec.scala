@@ -16,4 +16,13 @@ class ChitonSpec extends AnyFreeSpec {
     }
   }
 
+  "part2" - {
+    "must return 315" - {
+      "when given example input" in {
+        val result = part2(file)
+        assert(result == 315)
+      }
+    }
+  }
+
 }
