@@ -34,91 +34,91 @@ class PacketDecoderSpec extends AnyFreeSpec {
     }
   }
 
-  "getSumOfVersions" - {
+  "part1" - {
 
     "when given 8A004A801A8002F478" - {
       "must return 16" in {
-        val result  = getSumOfVersions("8A004A801A8002F478")
+        val result  = part1("8A004A801A8002F478")
         assert(result == 16)
       }
     }
 
     "when given 620080001611562C8802118E34" - {
       "must return 12" in {
-        val result  = getSumOfVersions("620080001611562C8802118E34")
+        val result  = part1("620080001611562C8802118E34")
         assert(result == 12)
       }
     }
 
     "when given C0015000016115A2E0802F182340" - {
       "must return 23" in {
-        val result  = getSumOfVersions("C0015000016115A2E0802F182340")
+        val result  = part1("C0015000016115A2E0802F182340")
         assert(result == 23)
       }
     }
 
     "when given A0016C880162017C3686B18A3D4780" - {
       "must return 31" in {
-        val result  = getSumOfVersions("A0016C880162017C3686B18A3D4780")
+        val result  = part1("A0016C880162017C3686B18A3D4780")
         assert(result == 31)
       }
     }
   }
 
-  "getValueOfExpression" - {
+  "part2" - {
 
     "when given C200B40A82" - {
       "must return 3" in {
-        val result = getValueOfExpression("C200B40A82")
+        val result = part2("C200B40A82")
         assert(result == 3)
       }
     }
 
     "when given 04005AC33890" - {
       "must return 54" in {
-        val result = getValueOfExpression("04005AC33890")
+        val result = part2("04005AC33890")
         assert(result == 54)
       }
     }
 
     "when given 880086C3E88112" - {
       "must return 7" in {
-        val result = getValueOfExpression("880086C3E88112")
+        val result = part2("880086C3E88112")
         assert(result == 7)
       }
     }
 
     "when given CE00C43D881120" - {
       "must return 9" in {
-        val result = getValueOfExpression("CE00C43D881120")
+        val result = part2("CE00C43D881120")
         assert(result == 9)
       }
     }
 
     "when given D8005AC2A8F0" - {
       "must return 1" in {
-        val result = getValueOfExpression("D8005AC2A8F0")
+        val result = part2("D8005AC2A8F0")
         assert(result == 1)
       }
     }
 
     "when given F600BC2D8F" - {
       "must return 0" in {
-        val result = getValueOfExpression("F600BC2D8F")
+        val result = part2("F600BC2D8F")
         assert(result == 0)
       }
     }
 
     "when given 9C005AC2F8F0" - {
       "must return 0" in {
-        val result = getValueOfExpression("9C005AC2F8F0")
+        val result = part2("9C005AC2F8F0")
         assert(result == 0)
       }
     }
 
     "when given 9C0141080250320F1802104A08" - {
       "must return 1" in {
-        val result = getValueOfExpression("9C0141080250320F1802104A08")
+        val result = part2("9C0141080250320F1802104A08")
         assert(result == 1)
       }
     }

@@ -9,38 +9,35 @@ object PacketDecoder {
 
   def run(): Unit = {
     val file = "/day-16-input.txt"
-    println(s"Day 16 part 1 result: ${part1(file)}")
-    println(s"Day 16 part 2 result: ${part2(file)}")
+    val input = fileReader(file).head
+    println(s"Day 16 part 1 result: ${part1(input)}")
+    println(s"Day 16 part 2 result: ${part2(input)}")
     println()
   }
 
-  def part1(file: String): Int =
-    getSumOfVersions(fileReader(file).head)
+  def part1(hexadecimal: String): Int = {
+    def rec(packets: Seq[Packet], acc: Int = 0): Int = {
+      packets match {
+        case Nil => acc
+        case head :: tail => rec(head.subPackets, head.version) + rec(tail, acc)
+      }
+    }
+    rec(getPackets(hexadecimalToBinary(hexadecimal))._1)
+  }
 
-  def part2(file: String): Long =
-    getValueOfExpression(fileReader(file).head)
+  def part2(hexadecimal: String): Long =
+    getPackets(hexadecimalToBinary(hexadecimal))._1.head.valueOfSubPackets
 
   case class Packet(version: Int, typeId: Int, value: Long = 0L, subPackets: Seq[Packet] = Nil) {
     val valueOfSubPackets: Long = typeId match {
-      case 0 => getValueOfSubPackets(0L)(_ + _)
-      case 1 => getValueOfSubPackets(1L)(_ * _)
-      case 2 => getValueOfSubPackets(Long.MaxValue)(Math.min)
-      case 3 => getValueOfSubPackets(Long.MinValue)(Math.max)
+      case 0 => subPackets.map(_.valueOfSubPackets).sum
+      case 1 => subPackets.map(_.valueOfSubPackets).product
+      case 2 => subPackets.map(_.valueOfSubPackets).min
+      case 3 => subPackets.map(_.valueOfSubPackets).max
       case 5 => if (subPackets.head.valueOfSubPackets > subPackets.last.valueOfSubPackets) 1 else 0
       case 6 => if (subPackets.head.valueOfSubPackets < subPackets.last.valueOfSubPackets) 1 else 0
       case 7 => if (subPackets.head.valueOfSubPackets == subPackets.last.valueOfSubPackets) 1 else 0
       case _ => value
-    }
-
-    private def getValueOfSubPackets(default: Long)(f: (Long, Long) => Long): Long = {
-      @tailrec
-      def rec(packets: Seq[Packet], acc: Long = default): Long = {
-        packets match {
-          case Nil => acc
-          case head :: tail => rec(tail, f(acc, head.valueOfSubPackets))
-        }
-      }
-      rec(subPackets)
     }
   }
 
@@ -92,21 +89,6 @@ object PacketDecoder {
         }
 
     }
-  }
-
-  def getSumOfVersions(input: String): Int = {
-    def rec(packets: Seq[Packet], acc: Int = 0): Int = {
-      packets match {
-        case Nil => acc
-        case head :: tail => rec(head.subPackets, head.version) + rec(tail, acc)
-      }
-    }
-    rec(getPackets(hexadecimalToBinary(input))._1)
-  }
-
-  def getValueOfExpression(input: String): Long = {
-    val r = getPackets(hexadecimalToBinary(input))._1
-    r.head.valueOfSubPackets
   }
 
 }
