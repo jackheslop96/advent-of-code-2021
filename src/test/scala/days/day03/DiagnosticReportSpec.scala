@@ -26,51 +26,6 @@ class DiagnosticReportSpec extends AnyFreeSpec {
     }
   }
 
-  "binaryToDecimal" - {
-
-    "when given 0" - {
-      "must return 0" in {
-        val result = binaryToDecimal("0")
-        assert(result == 0)
-      }
-    }
-
-    "when given 1" - {
-      "must return 1" in {
-        val result = binaryToDecimal("1")
-        assert(result == 1)
-      }
-    }
-
-    "when given 10" - {
-      "must return 2" in {
-        val result = binaryToDecimal("10")
-        assert(result == 2)
-      }
-    }
-
-    "when given 10110" - {
-      "must return 22" in {
-        val result = binaryToDecimal("10110")
-        assert(result == 22)
-      }
-    }
-
-    "when given 10111" - {
-      "must return 23" in {
-        val result = binaryToDecimal("10111")
-        assert(result == 23)
-      }
-    }
-
-    "when given 01010" - {
-      "must return 10" in {
-        val result = binaryToDecimal("01010")
-        assert(result == 10)
-      }
-    }
-  }
-
   "powerConsumption" - {
     "when given the example report" - {
       "must return 198" in {

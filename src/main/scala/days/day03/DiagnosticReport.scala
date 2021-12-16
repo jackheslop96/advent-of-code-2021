@@ -1,9 +1,9 @@
 package days.day03
 
+import utils.BinaryUtils.binaryToDecimal
 import utils.FileReader.fileReader
 
 import scala.annotation.tailrec
-import scala.math.pow
 
 object DiagnosticReport {
 
@@ -52,17 +52,6 @@ object DiagnosticReport {
 
     rec(lines)
   }
-
-  def binaryToDecimal(binary: String): Double = binary
-    .reverse
-    .zipWithIndex
-    .foldLeft[Double](0)((a, b) => (a, b) match {
-      case (acc, (char, index)) =>
-        char match {
-          case '1' => acc + pow(2, index.toDouble)
-          case _ => acc
-        }
-    })
 
   sealed trait Commonality
   case object MostCommon extends Commonality

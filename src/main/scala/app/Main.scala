@@ -15,6 +15,7 @@ import days.day12.PassagePathing
 import days.day13.TransparentOrigami
 import days.day14.ExtendedPolymerization
 import days.day15.Chiton
+import days.day16.PacketDecoder
 
 object Main extends App {
 
@@ -62,4 +63,7 @@ object Main extends App {
 
   // Day 15
   Chiton.run()
+
+  // Day 16
+  PacketDecoder.run()
 }
