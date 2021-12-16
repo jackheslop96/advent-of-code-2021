@@ -10,13 +10,39 @@ object PacketDecoder {
   def run(): Unit = {
     val file = "/day-16-input.txt"
     println(s"Day 16 part 1 result: ${part1(file)}")
+    println(s"Day 16 part 2 result: ${part2(file)}")
     println()
   }
 
   def part1(file: String): Int =
     getSumOfVersions(fileReader(file).head)
 
-  case class Packet(version: Int, typeId: Int, subPackets: Seq[Packet] = Nil)
+  def part2(file: String): Long =
+    getValueOfExpression(fileReader(file).head)
+
+  case class Packet(version: Int, typeId: Int, value: Long = 0L, subPackets: Seq[Packet] = Nil) {
+    val valueOfSubPackets: Long = typeId match {
+      case 0 => getValueOfSubPackets(0L)(_ + _)
+      case 1 => getValueOfSubPackets(1L)(_ * _)
+      case 2 => getValueOfSubPackets(Long.MaxValue)(Math.min)
+      case 3 => getValueOfSubPackets(Long.MinValue)(Math.max)
+      case 5 => if (subPackets.head.valueOfSubPackets > subPackets.last.valueOfSubPackets) 1 else 0
+      case 6 => if (subPackets.head.valueOfSubPackets < subPackets.last.valueOfSubPackets) 1 else 0
+      case 7 => if (subPackets.head.valueOfSubPackets == subPackets.last.valueOfSubPackets) 1 else 0
+      case _ => value
+    }
+
+    private def getValueOfSubPackets(default: Long)(f: (Long, Long) => Long): Long = {
+      @tailrec
+      def rec(packets: Seq[Packet], acc: Long = default): Long = {
+        packets match {
+          case Nil => acc
+          case head :: tail => rec(tail, f(acc, head.valueOfSubPackets))
+        }
+      }
+      rec(subPackets)
+    }
+  }
 
   def getPackets(binary: String, max: Int = Int.MaxValue): (Seq[Packet], String) = {
     @tailrec
@@ -51,17 +77,18 @@ object PacketDecoder {
             case _ => rec(str.drop(5), acc + str.tail.take(4))
           }
         }
-        (Packet(version, typeId, Nil), rec(rest)._2)
+        val (value, remainder) = rec(rest)
+        (Packet(version, typeId, value = binaryToDecimal(value).toLong), remainder)
       case _ =>
         rest.head match {
           case '0' =>
-            //val totalLength = binaryToDecimal(rest.tail.take(15)).toInt
-            val (subPackets, remainder) = getPackets(rest.tail.drop(15))
-            (Packet(version, typeId, subPackets), remainder)
+            val totalLength = binaryToDecimal(rest.tail.take(15)).toInt
+            val (subPackets, _) = getPackets(rest.tail.slice(15, totalLength + 15))
+            (Packet(version, typeId, subPackets = subPackets), rest.tail.drop(15 + totalLength))
           case _ =>
             val numberOfSubPackets = binaryToDecimal(rest.tail.take(11)).toInt
             val (subPackets, remainder) = getPackets(rest.tail.drop(11), numberOfSubPackets)
-            (Packet(version, typeId, subPackets), remainder)
+            (Packet(version, typeId, subPackets = subPackets), remainder)
         }
 
     }
@@ -75,6 +102,11 @@ object PacketDecoder {
       }
     }
     rec(getPackets(hexadecimalToBinary(input))._1)
+  }
+
+  def getValueOfExpression(input: String): Long = {
+    val r = getPackets(hexadecimalToBinary(input))._1
+    r.head.valueOfSubPackets
   }
 
 }
