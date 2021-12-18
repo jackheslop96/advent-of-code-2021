@@ -15,7 +15,7 @@ object TrickShot {
       x >= targetArea.x1 && x <= targetArea.x2 && y >= targetArea.y1 && y <= targetArea.y2
 
     def hasMissedTargetArea(targetArea: TargetArea): Boolean =
-      x > targetArea.x2 || y < targetArea.y1
+      x > targetArea.x2 || (x >= targetArea.x1 && y < targetArea.y1)
   }
 
   case class Velocity(x: Int, y: Int) {
@@ -34,6 +34,14 @@ object TrickShot {
     def apply(): Probe = new Probe(Coordinate(0, 0), Velocity(0, 0))
   }
 
+  sealed trait Result
+  case class Hit(highestY: Int) extends Result
+  case object Undershoot extends Result
+  case object Overshoot extends Result
+  case object InfiniteUndershoot extends Result
+  case object Through extends Result
+  case object InfiniteThrough extends Result
+
   def run(): Unit = {
     val file = "/day-17-input.txt"
     println(s"Day 17 part 1 result: ${part1(file)}")
@@ -41,24 +49,27 @@ object TrickShot {
     println()
   }
 
-  private def run(file: String): Seq[Int] = {
+  private def run(file: String): Seq[Hit] = {
     val targetArea = initialiseTargetArea(file)
-    val probes = velocities(targetArea).map(Probe().fire(_))
-    probes.flatMap(steps(_, targetArea))
+    hits(targetArea)
   }
 
-  def part1(file: String): Int = run(file).max
+  def part1(file: String): Int = run(file).maxBy(_.highestY).highestY
 
   def part2(file: String): Int = run(file).size
 
-  private def velocities(targetArea: TargetArea): Seq[Velocity] = {
-    var velocities: Seq[Velocity] = Nil
-    val xs = minX(targetArea) to targetArea.x2
-    val ys = targetArea.y1 to 200 // TODO - don't use arbitrary yMax
-    for (x <- xs; y <- ys) {
-      velocities = velocities :+ Velocity(x, y)
-    }
-    velocities
+  private def hits(targetArea: TargetArea): Seq[Hit] = {
+    (minX(targetArea) to targetArea.x2).foldLeft[Seq[Hit]](Nil)((acc, x) => {
+      @tailrec
+      def rec(y: Int, hits: Seq[Hit] = Nil): Seq[Hit] = {
+        steps(Probe().fire(Velocity(x, y)), targetArea) match {
+          case hit: Hit => rec(y + 1, hits :+ hit)
+          case Undershoot | Through => rec(y + 1, hits)
+          case _ => hits
+        }
+      }
+      acc ++ rec(targetArea.y1)
+    })
   }
 
   private def minX(targetArea: TargetArea): Int = {
@@ -72,18 +83,42 @@ object TrickShot {
     rec()
   }
 
-  private def steps(probe: Probe, targetArea: TargetArea): Option[Int] = {
+  private def steps(probe: Probe, targetArea: TargetArea): Result = {
 
     @tailrec
-    def rec(probe: Probe, highestY: Int = probe.position.y): Option[Int] = {
-      probe.step match {
-        case Probe(position, _) if position.isInTargetArea(targetArea) => Some(Math.max(position.y, highestY))
-        case Probe(position, _) if position.hasMissedTargetArea(targetArea) => None
-        case probe => rec(probe, Math.max(probe.position.y, highestY))
+    def rec(prev: Probe, highestY: Int = probe.position.y): Result = {
+      prev.step match {
+        case curr if curr.position.isInTargetArea(targetArea) =>
+          Hit(Math.max(curr.position.y, highestY))
+        case curr if curr.position.hasMissedTargetArea(targetArea) =>
+          result(prev, curr, targetArea)
+        case curr =>
+          rec(curr, Math.max(curr.position.y, highestY))
       }
     }
 
     rec(probe)
+  }
+
+  private def result(prev: Probe, curr: Probe, targetArea: TargetArea): Result = {
+    if (prev.position.x == curr.position.x) {
+      if (prev.position.x >= targetArea.x1 && prev.position.x <= targetArea.x2) {
+        // probe has gone through target
+        if (prev.position.y == 0 || curr.position.y == 0) {
+          // no increase in initial Y velocity will ever make the probe hit the target
+          InfiniteThrough
+        } else {
+          Through
+        }
+      } else {
+        // no increase in initial Y velocity will ever make the probe hit the target
+        InfiniteUndershoot
+      }
+    } else {
+      val gradient = (curr.position.y - prev.position.y).toFloat / (curr.position.x - prev.position.x)
+      val yIntercept = curr.position.y - (gradient * curr.position.x)
+      if ((gradient * targetArea.x2) + yIntercept > targetArea.y2.toFloat) Overshoot else Undershoot
+    }
   }
 
   private def initialiseTargetArea(file: String): TargetArea = {
