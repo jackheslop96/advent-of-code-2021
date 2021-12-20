@@ -17,6 +17,7 @@ import days.day14.ExtendedPolymerization
 import days.day15.Chiton
 import days.day16.PacketDecoder
 import days.day17.TrickShot
+import days.day20.TrenchMap
 
 object Main extends App {
 
@@ -70,4 +71,11 @@ object Main extends App {
 
   // Day 17
   TrickShot.run()
+
+  // Day 18
+
+  // Day 19
+
+  // Day 20
+  TrenchMap.run()
 }
