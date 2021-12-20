@@ -1,6 +1,6 @@
 package days.day20
 
-import days.day20.TrenchMap.{TrenchFloor, applyAlgorithm, expandImage, part1}
+import days.day20.TrenchMap._
 import org.scalatest.freespec.AnyFreeSpec
 import utils.FileReader.fileReader
 
@@ -8,11 +8,18 @@ class TrenchMapSpec extends AnyFreeSpec {
 
   private val file = "/day-20-test-input.txt"
 
-  "part1" - {
+  "run" - {
     "must return 35" - {
-      "when given example input" in {
-        val result = part1(file)
+      "when algorithm applied twice on example input" in {
+        val result = TrenchMap.run(file, 2)
         assert(result == 35)
+      }
+    }
+
+    "must return 3351" - {
+      "when algorithm applied twice on example input" in {
+        val result = TrenchMap.run(file, 50)
+        assert(result == 3351)
       }
     }
   }

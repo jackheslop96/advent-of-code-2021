@@ -13,14 +13,15 @@ object TrenchMap {
 
   def run(): Unit = {
     val file = "/day-20-input.txt"
-    println(s"Day 20 part 1 result: ${part1(file)}")
+    println(s"Day 20 part 1 result: ${run(file, 2)}")
+    println(s"Day 20 part 2 result: ${run(file, 50)}")
     println()
   }
 
-  def part1(file: String): Int = {
+  def run(file: String, numberOfSteps: Int): Int = {
     @tailrec
     def rec(trenchFloor: TrenchFloor, defaultChar: Char, counter: Int = 0): Int = {
-      if (counter > 1) {
+      if (counter >= numberOfSteps) {
         trenchFloor.image.flatten.count(_ == '#')
       } else {
         val updatedTrench = applyAlgorithm(trenchFloor, defaultChar)
