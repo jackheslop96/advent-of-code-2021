@@ -34,8 +34,8 @@ object TrenchMap {
       }
     }
 
-    val image = initialise(file)
-    rec(image.copy(image = expandImage(image.image)), '.')
+    val trenchFloor = initialise(file)
+    rec(trenchFloor.copy(image = expandImage(trenchFloor.image)), '.')
   }
 
   def applyAlgorithm(trenchFloor: TrenchFloor, defaultChar: Char): TrenchFloor = {
