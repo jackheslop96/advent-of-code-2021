@@ -72,10 +72,6 @@ object Main extends App {
   // Day 17
   TrickShot.run()
 
-  // Day 18
-
-  // Day 19
-
   // Day 20
   TrenchMap.run()
 }
