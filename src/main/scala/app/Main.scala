@@ -18,6 +18,7 @@ import days.day15.Chiton
 import days.day16.PacketDecoder
 import days.day17.TrickShot
 import days.day20.TrenchMap
+import days.day21.DiracDice
 
 object Main extends App {
 
@@ -74,4 +75,7 @@ object Main extends App {
 
   // Day 20
   TrenchMap.run()
+
+  // Day 21
+  DiracDice.run()
 }
