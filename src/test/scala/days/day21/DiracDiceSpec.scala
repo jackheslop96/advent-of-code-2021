@@ -7,11 +7,6 @@ class DiracDiceSpec extends AnyFreeSpec {
 
   private val file = "/day-21-test-input.txt"
 
-  private val players = Seq(
-    Player(1, 4, 0, 0),
-    Player(2, 8, 0, 0)
-  )
-
   "part1" - {
     "when given example input" - {
       "must return 739785" in {
@@ -44,12 +39,12 @@ class DiracDiceSpec extends AnyFreeSpec {
     }
   }
 
-//  "part2" - {
-//    "when given example input" - {
-//      "must return 444356092776315" in {
-//        val result = part2(players)
-//        assert(result == 444356092776315L)
-//      }
-//    }
-//  }
+  "part2" - {
+    "when given example input" - {
+      "must return 444356092776315" in {
+        val result = part2(file)
+        assert(result == 444356092776315L)
+      }
+    }
+  }
 }

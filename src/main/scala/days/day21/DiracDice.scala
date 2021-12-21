@@ -34,41 +34,44 @@ object DiracDice {
   }
 
   def part1(file: String): Int = {
-    val players = fileReader(file).map { l =>
+    def playGame(players: Seq[Player]): Int = {
+      @tailrec
+      def rec(players: Seq[Player]): Int = {
+        players match {
+          case head :: tail =>
+            val totalRolls = players.map(_.turns).sum * 3
+
+            def roll(offset: Int): Int =
+              (totalRolls + offset) % 100 match {
+                case 0 => 100
+                case r => r
+              }
+
+            val rolls = Seq(roll(1), roll(2), roll(3))
+            val updatedPlayer = head.takeTurn(rolls)
+            if (updatedPlayer.points >= 1000) {
+              val loserPoints = tail.map(_.points).sum
+              val rolls = (tail.map(_.turns).sum * 3) + (updatedPlayer.turns * 3)
+              loserPoints * rolls
+            } else {
+              rec(tail :+ updatedPlayer)
+            }
+        }
+      }
+
+      rec(players)
+    }
+
+    playGame(initialisePlayers(file))
+  }
+
+  def part2(file: String): Long = ???
+
+  private def initialisePlayers(file: String): Seq[Player] =
+    fileReader(file).map { l =>
       val pattern = "Player ([0-9]+) starting position: ([0-9]+)".r
       val pattern(number, position) = l
       Player(number.toInt, position.toInt, 0, 0)
     }
-    playGame(players)
-  }
-
-  private def playGame(players: Seq[Player]): Int = {
-    @tailrec
-    def rec(players: Seq[Player]): Int = {
-      players match {
-        case head :: tail =>
-          val totalRolls = players.map(_.turns).sum * 3
-
-          def roll(offset: Int): Int = {
-            (totalRolls + offset) % 100 match {
-              case 0 => 100
-              case r => r
-            }
-          }
-
-          val rolls = Seq(roll(1), roll(2), roll(3))
-          val updatedPlayer = head.takeTurn(rolls)
-          if (updatedPlayer.points >= 1000) {
-            val loserPoints = tail.map(_.points).sum
-            val rolls = (tail.map(_.turns).sum * 3) + (updatedPlayer.turns * 3)
-            loserPoints * rolls
-          } else {
-            rec(tail :+ updatedPlayer)
-          }
-      }
-    }
-
-    rec(players)
-  }
 
 }
