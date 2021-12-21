@@ -7,6 +7,11 @@ class DiracDiceSpec extends AnyFreeSpec {
 
   private val file = "/day-21-test-input.txt"
 
+  private val players = Seq(
+    Player(1, 4, 0, 0),
+    Player(2, 8, 0, 0)
+  )
+
   "part1" - {
     "when given example input" - {
       "must return 739785" in {
@@ -21,25 +26,30 @@ class DiracDiceSpec extends AnyFreeSpec {
       "must return updated player and dice" - {
 
         "when player starts with 4 and rolls 1, 2, 3" in {
-          val dice = Dice(0)
           val player = Player(1, 4, 0, 0)
 
-          val result = player.takeTurn(dice)
+          val result = player.takeTurn(Seq(1, 2, 3))
 
-          assertResult(Player(1, 10, 10, 1))(result._1)
-          assertResult(Dice(3))(result._2)
+          assertResult(Player(1, 10, 10, 1))(result)
         }
 
         "when player starts with 8 and rolls 4,5,6" in {
-          val dice = Dice(3)
           val player = Player(2, 8, 0, 0)
 
-          val result = player.takeTurn(dice)
+          val result = player.takeTurn(Seq(4, 5, 6))
 
-          assertResult(Player(2, 3, 3, 1))(result._1)
-          assertResult(Dice(6))(result._2)
+          assertResult(Player(2, 3, 3, 1))(result)
         }
       }
     }
   }
+
+//  "part2" - {
+//    "when given example input" - {
+//      "must return 444356092776315" in {
+//        val result = part2(players)
+//        assert(result == 444356092776315L)
+//      }
+//    }
+//  }
 }

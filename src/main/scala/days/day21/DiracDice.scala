@@ -13,26 +13,24 @@ object DiracDice {
   }
 
   case class Player(number: Int, position: Int, points: Int, turns: Int) {
-    def takeTurn(dice: Dice): (Player, Dice) = {
+    def takeTurn(rolls: Seq[Int]): Player = {
       @tailrec
-      def rec(player: Player, dice: Dice, rolls: Int = 0): (Player, Dice) = {
-        if (rolls >= 3) {
-          (player.copy(points = points + player.position, turns = turns + 1), dice)
-        } else {
-          val rolledDice = dice.roll
-          val updatedPosition = (player.position + rolledDice.score) % 10 match {
-            case 0 => 10
-            case p => p
-          }
-          rec(player.copy(position = updatedPosition), rolledDice, rolls + 1)
+      def rec(rolls: Seq[Int], player: Player): Player = {
+        rolls match {
+          case Nil => player.copy(points = points + player.position, turns = turns + 1)
+          case head :: tail =>
+            val updatedPlayer = {
+              val updatedPosition = (player.position + head) % 10 match {
+                case 0 => 10
+                case p => p
+              }
+              player.copy(position = updatedPosition)
+            }
+            rec(tail, updatedPlayer)
         }
       }
-      rec(this, dice)
+      rec(rolls, this)
     }
-  }
-
-  case class Dice(score: Int) {
-    def roll: Dice = this.copy(score = score + 1)
   }
 
   def part1(file: String): Int = {
@@ -46,16 +44,26 @@ object DiracDice {
 
   private def playGame(players: Seq[Player]): Int = {
     @tailrec
-    def rec(players: Seq[Player], dice: Dice = Dice(0)): Int = {
+    def rec(players: Seq[Player]): Int = {
       players match {
         case head :: tail =>
-          val (updatedPlayer, updatedDice) = head.takeTurn(dice)
+          val totalRolls = players.map(_.turns).sum * 3
+
+          def roll(offset: Int): Int = {
+            (totalRolls + offset) % 100 match {
+              case 0 => 100
+              case r => r
+            }
+          }
+
+          val rolls = Seq(roll(1), roll(2), roll(3))
+          val updatedPlayer = head.takeTurn(rolls)
           if (updatedPlayer.points >= 1000) {
             val loserPoints = tail.map(_.points).sum
             val rolls = (tail.map(_.turns).sum * 3) + (updatedPlayer.turns * 3)
             loserPoints * rolls
           } else {
-            rec(tail :+ updatedPlayer, updatedDice)
+            rec(tail :+ updatedPlayer)
           }
       }
     }
