@@ -21,19 +21,19 @@ class DiracDiceSpec extends AnyFreeSpec {
       "must return updated player and dice" - {
 
         "when player starts with 4 and rolls 1, 2, 3" in {
-          val player = Player(1, 4, 0, 0)
+          val player = Player(4, 0)
 
           val result = player.takeTurn(Seq(1, 2, 3))
 
-          assertResult(Player(1, 10, 10, 1))(result)
+          assertResult(Player(10, 10))(result)
         }
 
         "when player starts with 8 and rolls 4,5,6" in {
-          val player = Player(2, 8, 0, 0)
+          val player = Player(8, 0)
 
           val result = player.takeTurn(Seq(4, 5, 6))
 
-          assertResult(Player(2, 3, 3, 1))(result)
+          assertResult(Player(3, 3))(result)
         }
       }
     }
