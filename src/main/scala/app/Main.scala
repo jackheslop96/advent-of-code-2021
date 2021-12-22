@@ -19,6 +19,7 @@ import days.day16.PacketDecoder
 import days.day17.TrickShot
 import days.day20.TrenchMap
 import days.day21.DiracDice
+import days.day22.ReactorReboot
 
 object Main extends App {
 
@@ -78,4 +79,7 @@ object Main extends App {
 
   // Day 21
   DiracDice.run()
+
+  // Day 22
+  ReactorReboot.run()
 }
