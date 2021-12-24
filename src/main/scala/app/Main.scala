@@ -1,7 +1,6 @@
 package app
 
 import days.day01.DepthIncreaseCounter
-import days.day10.SyntaxScoring
 import days.day02.Submarine
 import days.day03.DiagnosticReport
 import days.day04.Bingo
@@ -10,6 +9,7 @@ import days.day06.LanternFish
 import days.day07.Crab
 import days.day08.SevenSegmentSearch
 import days.day09.SmokeBasin
+import days.day10.SyntaxScoring
 import days.day11.DumboOctopus
 import days.day12.PassagePathing
 import days.day13.TransparentOrigami
@@ -82,4 +82,7 @@ object Main extends App {
 
   // Day 22
   ReactorReboot.run()
+
+  // Day 24
+  //ArithmeticLogicUnit.run()
 }
