@@ -7,26 +7,34 @@ import scala.collection.mutable
 
 object ArithmeticLogicUnit {
 
+  private val MIN = 11111111111111L
+  private val MAX = 99999999999999L
+
   def run(): Unit = {
     val file = "/day-24-input.txt"
-    println(s"Day 24 part 1 result: ${run(file)}")
+    println(s"Day 24 part 1 result: ${run(file, MAX, -1)}")
+    println(s"Day 24 part 2 result: ${run(file, MIN, 1)}")
     println()
   }
 
-  private def run(file: String): Long = {
+  private def run(file: String, start: Long, step: Long): Long = {
     @tailrec
-    def rec(modelNumber: Long = 99999999999999L): Long = {
-      if (modelNumber.toString.contains('0')) {
-        rec(modelNumber - 1)
+    def rec(modelNumber: Long): Long = {
+      if (modelNumber < MIN || modelNumber > MAX) {
+        throw new Exception("No result found.")
       } else {
-        if (isModelNumberValid(modelNumber, file)) {
-          modelNumber
+        if (modelNumber.toString.contains('0')) {
+          rec(modelNumber + step)
         } else {
-          rec(modelNumber - 1)
+          if (isModelNumberValid(modelNumber, file)) {
+            modelNumber
+          } else {
+            rec(modelNumber + step)
+          }
         }
       }
     }
-    rec()
+    rec(start)
   }
 
   private def isModelNumberValid(modelNumber: Long, file: String): Boolean = {
@@ -37,6 +45,7 @@ object ArithmeticLogicUnit {
     def rec(inputs: Seq[Int], instructions: Seq[String]): Boolean = {
       instructions match {
         case Nil =>
+          println(s"$modelNumber: $wxyz")
           wxyz.get("z").contains(0)
         case head :: tail =>
           val args = head.split(" ")
