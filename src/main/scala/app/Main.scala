@@ -20,6 +20,7 @@ import days.day17.TrickShot
 import days.day20.TrenchMap
 import days.day21.DiracDice
 import days.day22.ReactorReboot
+import days.day25.SeaCucumber
 
 object Main extends App {
 
@@ -85,4 +86,7 @@ object Main extends App {
 
   // Day 24
   //ArithmeticLogicUnit.run()
+
+  // Day 25
+  SeaCucumber.run()
 }
